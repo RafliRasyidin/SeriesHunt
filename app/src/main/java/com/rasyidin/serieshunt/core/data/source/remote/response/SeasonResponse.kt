@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SeasonResponse(
     @SerializedName("air_date")
-    val airDate: String = "",
+    val airDate: String? = "",
 
     @SerializedName("episode_count")
     val episodeCount: Int = 0,
@@ -13,13 +13,13 @@ data class SeasonResponse(
     val id: Int = 0,
 
     @SerializedName("name")
-    val name: String = "",
+    val name: String? = "",
 
     @SerializedName("overview")
-    val overview: String = "",
+    val overview: String? = "",
 
     @SerializedName("poster_path")
-    val posterPath: String = "",
+    val posterPath: String? = "",
 
     @SerializedName("season_number")
     val seasonNumber: Int = 0

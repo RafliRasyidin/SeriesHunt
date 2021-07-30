@@ -7,22 +7,22 @@ data class TvItemResponse(
     val id: Int = 0,
 
     @SerializedName("backdrop_path")
-    val backdropPath: String = "",
+    val backdropPath: String? = "",
 
     @SerializedName("episode_run_time")
     val episodeRunTime: List<Int>,
 
     @SerializedName("firstAirDate")
-    val firstAirDate: String = "",
+    val firstAirDate: String? = "",
 
     @SerializedName("genres")
     val genres: List<Genre>,
 
     @SerializedName("last_air_date")
-    val lastAirDate: String = "",
+    val lastAirDate: String? = "",
 
     @SerializedName("name")
-    val name: String = "",
+    val name: String? = "",
 
     @SerializedName("number_of_episodes")
     val numberOfEpisodes: Int = 0,
@@ -31,19 +31,19 @@ data class TvItemResponse(
     val numberOfSeasons: Int = 0,
 
     @SerializedName("overview")
-    val overview: String = "",
+    val overview: String? = "",
 
     @SerializedName("popularity")
     val popularity: Double = 0.0,
 
     @SerializedName("poster_path")
-    val posterPath: String = "",
+    val posterPath: String? = "",
 
     @SerializedName("seasons")
     val seasonResponses: List<SeasonResponse>,
 
     @SerializedName("status")
-    val status: String = "",
+    val status: String? = "",
 
     @SerializedName("vote_average")
     val voteAverage: Double = 0.0,
