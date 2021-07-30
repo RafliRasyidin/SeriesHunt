@@ -10,9 +10,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-class TvShowRepository(private val remoteDataSource: RemoteDataSource) : ITvShowRepository {
+class TvShowRepository @Inject constructor(private val remoteDataSource: RemoteDataSource) :
+    ITvShowRepository {
 
     override fun getAiringToday(): Flow<Resource<List<TvShow>>> {
         return flow {
