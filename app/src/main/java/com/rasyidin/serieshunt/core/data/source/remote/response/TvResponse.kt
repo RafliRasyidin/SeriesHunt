@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class TvResponse(
     @SerializedName("page")
-    val page: Int,
+    val page: Int = 1,
 
     @SerializedName("results")
     val results: List<TvItemResponse>,
