@@ -74,7 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvPotrait(
+                            hideShimmerRvPortrait(
                                 binding.contentContainer.rvPopular,
                                 binding.contentContainer.shimmerRvPopular
                             )
@@ -83,13 +83,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 }
                 is Resource.Error -> {
-                    hideShimmerRvPotrait(
+                    hideShimmerRvPortrait(
                         binding.contentContainer.rvPopular,
                         binding.contentContainer.shimmerRvPopular
                     )
                     Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
                 }
-                is Resource.Loading -> showShimmerRvPotrait(
+                is Resource.Loading -> showShimmerRvPortrait(
                     binding.contentContainer.rvPopular,
                     binding.contentContainer.shimmerRvPopular
                 )
@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvPotrait(
+                            hideShimmerRvPortrait(
                                 binding.contentContainer.rvOnTheAir,
                                 binding.contentContainer.shimmerRvOnTheAir
                             )
@@ -111,12 +111,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
                 is Resource.Error -> {
                     Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                    hideShimmerRvPotrait(
+                    hideShimmerRvPortrait(
                         binding.contentContainer.rvOnTheAir,
                         binding.contentContainer.shimmerRvOnTheAir
                     )
                 }
-                is Resource.Loading -> showShimmerRvPotrait(
+                is Resource.Loading -> showShimmerRvPortrait(
                     binding.contentContainer.rvOnTheAir,
                     binding.contentContainer.shimmerRvOnTheAir
                 )
@@ -128,7 +128,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvPotrait(
+                            hideShimmerRvPortrait(
                                 binding.contentContainer.rvTopRated,
                                 binding.contentContainer.shimmerRvTopRated
                             )
@@ -138,12 +138,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
                 is Resource.Error -> {
                     Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                    hideShimmerRvPotrait(
+                    hideShimmerRvPortrait(
                         binding.contentContainer.rvTopRated,
                         binding.contentContainer.shimmerRvTopRated
                     )
                 }
-                is Resource.Loading -> showShimmerRvPotrait(
+                is Resource.Loading -> showShimmerRvPortrait(
                     binding.contentContainer.rvTopRated,
                     binding.contentContainer.shimmerRvTopRated
                 )
@@ -165,12 +165,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private fun showShimmerRvPotrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
+    private fun showShimmerRvPortrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
         recyclerView.visibility = View.GONE
         shimmer.visibility = View.VISIBLE
     }
 
-    private fun hideShimmerRvPotrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
+    private fun hideShimmerRvPortrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
         recyclerView.visibility = View.VISIBLE
         shimmer.visibility = View.GONE
     }

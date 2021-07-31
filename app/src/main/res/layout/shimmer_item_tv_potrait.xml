@@ -8,13 +8,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <include layout="@layout/item_tv_potrait_placeholder" />
+        <include layout="@layout/item_tv_portrait_placeholder" />
 
-        <include layout="@layout/item_tv_potrait_placeholder" />
+        <include layout="@layout/item_tv_portrait_placeholder" />
 
-        <include layout="@layout/item_tv_potrait_placeholder" />
+        <include layout="@layout/item_tv_portrait_placeholder" />
 
-        <include layout="@layout/item_tv_potrait_placeholder" />
+        <include layout="@layout/item_tv_portrait_placeholder" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </HorizontalScrollView>

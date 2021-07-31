@@ -5,15 +5,15 @@ import com.bumptech.glide.RequestManager
 import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.domain.model.TvShow
 import com.rasyidin.serieshunt.core.utils.Constants.BASE_URL_IMAGE
-import com.rasyidin.serieshunt.databinding.ItemTvPotraitBinding
+import com.rasyidin.serieshunt.databinding.ItemTvPortraitBinding
 import javax.inject.Inject
 
 open class PopularAdapter @Inject constructor(private val glide: RequestManager) :
-    BaseAdapter<TvShow>(R.layout.item_tv_potrait, DiffCallback) {
+    BaseAdapter<TvShow>(R.layout.item_tv_portrait, DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val tvShow = getItem(position)
-        val binding = ItemTvPotraitBinding.bind(holder.itemView)
+        val binding = ItemTvPortraitBinding.bind(holder.itemView)
         with(binding) {
             ratingContainer.tvRating.text = tvShow.voteAverage.toString()
             glide.load(BASE_URL_IMAGE + tvShow.posterPath)

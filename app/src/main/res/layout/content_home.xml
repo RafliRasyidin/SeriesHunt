@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_popular"
-        tools:listitem="@layout/item_tv_potrait" />
+        tools:listitem="@layout/item_tv_portrait" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_rv_popular"
@@ -89,7 +89,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_on_the_air"
-        tools:listitem="@layout/item_tv_potrait" />
+        tools:listitem="@layout/item_tv_portrait" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_rv_on_the_air"
@@ -129,7 +129,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_top_rated"
-        tools:listitem="@layout/item_tv_potrait" />
+        tools:listitem="@layout/item_tv_portrait" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_rv_top_rated"
