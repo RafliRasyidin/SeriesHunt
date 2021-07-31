@@ -12,7 +12,7 @@ data class TvItemResponse(
     @SerializedName("episode_run_time")
     val episodeRunTime: List<Int>,
 
-    @SerializedName("firstAirDate")
+    @SerializedName("first_air_date")
     val firstAirDate: String? = "",
 
     @SerializedName("genres")
