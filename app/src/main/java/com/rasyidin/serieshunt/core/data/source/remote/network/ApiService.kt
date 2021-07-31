@@ -1,6 +1,7 @@
 package com.rasyidin.serieshunt.core.data.source.remote.network
 
 import com.rasyidin.serieshunt.BuildConfig.MOVIEDB_API_KEY
+import com.rasyidin.serieshunt.core.data.source.remote.response.CreditsResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.TvItemResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.TvResponse
 import retrofit2.http.GET
@@ -44,4 +45,10 @@ interface ApiService {
         @Query("api_key") apiKey: String = MOVIEDB_API_KEY,
         @Query("page") page: Int = 1
     ): TvResponse
+
+    @GET("tv/{tv_id}/credits")
+    suspend fun getCredits(
+        @Query("tv_id") tvId: Int,
+        @Query("api_key") apiKey: String = MOVIEDB_API_KEY
+    ): CreditsResponse
 }
