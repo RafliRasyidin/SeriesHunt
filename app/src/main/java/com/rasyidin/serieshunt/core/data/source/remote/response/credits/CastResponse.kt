@@ -1,4 +1,4 @@
-package com.rasyidin.serieshunt.core.data.source.remote.response
+package com.rasyidin.serieshunt.core.data.source.remote.response.credits
 
 import com.google.gson.annotations.SerializedName
 

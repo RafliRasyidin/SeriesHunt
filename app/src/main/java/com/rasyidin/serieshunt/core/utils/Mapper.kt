@@ -1,6 +1,6 @@
 package com.rasyidin.serieshunt.core.utils
 
-import com.rasyidin.serieshunt.core.data.source.remote.response.TvItemResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
 import com.rasyidin.serieshunt.core.domain.model.TvShow
 
 fun List<TvItemResponse>.toListTvShow(): List<TvShow> {

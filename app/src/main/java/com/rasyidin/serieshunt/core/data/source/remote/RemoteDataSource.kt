@@ -2,7 +2,7 @@ package com.rasyidin.serieshunt.core.data.source.remote
 
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiResponse
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiService
-import com.rasyidin.serieshunt.core.data.source.remote.response.TvItemResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

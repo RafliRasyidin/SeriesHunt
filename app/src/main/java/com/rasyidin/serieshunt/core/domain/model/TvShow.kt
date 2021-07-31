@@ -1,7 +1,7 @@
 package com.rasyidin.serieshunt.core.domain.model
 
-import com.rasyidin.serieshunt.core.data.source.remote.response.Genre
-import com.rasyidin.serieshunt.core.data.source.remote.response.SeasonResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.Genre
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.SeasonResponse
 
 data class TvShow(
     val id: Int = 0,
