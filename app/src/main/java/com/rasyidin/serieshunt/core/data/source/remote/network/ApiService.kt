@@ -1,9 +1,9 @@
 package com.rasyidin.serieshunt.core.data.source.remote.network
 
 import com.rasyidin.serieshunt.BuildConfig.MOVIEDB_API_KEY
-import com.rasyidin.serieshunt.core.data.source.remote.response.CreditsResponse
-import com.rasyidin.serieshunt.core.data.source.remote.response.TvItemResponse
-import com.rasyidin.serieshunt.core.data.source.remote.response.TvResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CreditsResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -51,4 +51,10 @@ interface ApiService {
         @Query("tv_id") tvId: Int,
         @Query("api_key") apiKey: String = MOVIEDB_API_KEY
     ): CreditsResponse
+
+    @GET("tv/{tv_id}/videos")
+    suspend fun getVideos(
+        @Query("tv_id") tvId: Int,
+        @Query("api_key") apiKey: String = MOVIEDB_API_KEY
+    )
 }
