@@ -16,8 +16,11 @@
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/fragment_search.xml" value="0.1" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_square_tv.xml" value="0.264" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_potrait.xml" value="0.2" />
-        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_square.xml" value="0.2" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_potrait_placeholder.xml" value="0.2504528985507246" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_square.xml" value="0.4" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/rating_container.xml" value="0.20969202898550723" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/shimmer_item_tv_potrait.xml" value="0.2504528985507246" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/shimmer_item_tv_square.xml" value="0.136" />
       </map>
     </option>
   </component>

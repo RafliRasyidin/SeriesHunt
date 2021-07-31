@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.databinding.FragmentHomeBinding
 import com.rasyidin.serieshunt.presentation.adapter.OnTheAirAdapter
@@ -54,12 +56,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
+                            hideShimmerRvSquare()
                             airingTodayAdapter.submitList(listTvShow)
                         }
                     }
                 }
-                is Resource.Error -> Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                is Resource.Loading -> Unit
+                is Resource.Error -> {
+                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
+                    hideShimmerRvSquare()
+                }
+                is Resource.Loading -> showShimmerRvSquare()
             }
         }
 
@@ -68,12 +74,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
+                            hideShimmerRvPotrait(
+                                binding.contentContainer.rvPopular,
+                                binding.contentContainer.shimmerRvPopular
+                            )
                             popularAdapter.submitList(listTvShow)
                         }
                     }
                 }
-                is Resource.Error -> Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                is Resource.Loading -> Unit
+                is Resource.Error -> {
+                    hideShimmerRvPotrait(
+                        binding.contentContainer.rvPopular,
+                        binding.contentContainer.shimmerRvPopular
+                    )
+                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Loading -> showShimmerRvPotrait(
+                    binding.contentContainer.rvPopular,
+                    binding.contentContainer.shimmerRvPopular
+                )
             }
         }
 
@@ -82,12 +101,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
+                            hideShimmerRvPotrait(
+                                binding.contentContainer.rvOnTheAir,
+                                binding.contentContainer.shimmerRvOnTheAir
+                            )
                             onTheAirAdapter.submitList(listTvShow)
                         }
                     }
                 }
-                is Resource.Error -> Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                is Resource.Loading -> Unit
+                is Resource.Error -> {
+                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
+                    hideShimmerRvPotrait(
+                        binding.contentContainer.rvOnTheAir,
+                        binding.contentContainer.shimmerRvOnTheAir
+                    )
+                }
+                is Resource.Loading -> showShimmerRvPotrait(
+                    binding.contentContainer.rvOnTheAir,
+                    binding.contentContainer.shimmerRvOnTheAir
+                )
             }
         }
 
@@ -96,14 +128,51 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is Resource.Success -> {
                     resource.data?.let { listTvShow ->
                         if (listTvShow.isNotEmpty()) {
+                            hideShimmerRvPotrait(
+                                binding.contentContainer.rvTopRated,
+                                binding.contentContainer.shimmerRvTopRated
+                            )
                             topRatedAdapter.submitList(listTvShow)
                         }
                     }
                 }
-                is Resource.Error -> Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                is Resource.Loading -> Unit
+                is Resource.Error -> {
+                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
+                    hideShimmerRvPotrait(
+                        binding.contentContainer.rvTopRated,
+                        binding.contentContainer.shimmerRvTopRated
+                    )
+                }
+                is Resource.Loading -> showShimmerRvPotrait(
+                    binding.contentContainer.rvTopRated,
+                    binding.contentContainer.shimmerRvTopRated
+                )
             }
         }
+    }
+
+    private fun showShimmerRvSquare() {
+        binding.apply {
+            rvAiringToday.visibility = View.GONE
+            shimmerRvAiringToday.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideShimmerRvSquare() {
+        binding.apply {
+            rvAiringToday.visibility = View.VISIBLE
+            shimmerRvAiringToday.visibility = View.GONE
+        }
+    }
+
+    private fun showShimmerRvPotrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
+        recyclerView.visibility = View.GONE
+        shimmer.visibility = View.VISIBLE
+    }
+
+    private fun hideShimmerRvPotrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
+        recyclerView.visibility = View.VISIBLE
+        shimmer.visibility = View.GONE
     }
 
     private fun setupRvAiringToday() = binding.rvAiringToday.apply {

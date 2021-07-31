@@ -51,6 +51,17 @@
         app:layout_constraintTop_toBottomOf="@id/tv_popular"
         tools:listitem="@layout/item_tv_potrait" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_rv_popular"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_popular">
+
+        <include layout="@layout/shimmer_item_tv_potrait"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <TextView
         android:id="@+id/tv_on_the_air"
         style="@style/TextAppearance.Headline1"
@@ -80,6 +91,17 @@
         app:layout_constraintTop_toBottomOf="@id/tv_on_the_air"
         tools:listitem="@layout/item_tv_potrait" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_rv_on_the_air"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_on_the_air">
+
+        <include layout="@layout/shimmer_item_tv_potrait"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <TextView
         android:id="@+id/tv_top_rated"
         style="@style/TextAppearance.Headline1"
@@ -108,6 +130,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_top_rated"
         tools:listitem="@layout/item_tv_potrait" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_rv_top_rated"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_top_rated">
+
+        <include layout="@layout/shimmer_item_tv_potrait"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
