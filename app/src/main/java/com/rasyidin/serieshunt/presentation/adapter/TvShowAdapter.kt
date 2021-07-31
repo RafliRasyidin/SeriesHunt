@@ -18,7 +18,6 @@ class TvShowAdapter @Inject constructor(private val glide: RequestManager) :
             tvShow?.let {
                 tvRating.text = it.voteAverage.toString()
                 tvTitle.text = it.name
-                tvOverview.text = it.overview
 
                 glide.load(BASE_URL_IMAGE + it.backdropPath)
                     .centerCrop()

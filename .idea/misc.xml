@@ -4,17 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/drawable-v24/ic_broken_image.xml" value="0.1" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/drawable/bg_whiite_rounded_black_border.xml" value="0.2638888888888889" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/drawable/bg_white_top_rounded.xml" value="0.26481481481481484" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/drawable/ic_baseline_search.xml" value="0.2638888888888889" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/drawable/ic_star.xml" value="0.18518518518518517" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/drawable/ic_tv_placeholder.xml" value="0.1" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/activity_splash.xml" value="0.2" />
-        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/content_home.xml" value="0.2" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/content_home.xml" value="0.264" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/fragment_search.xml" value="0.1" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_square_tv.xml" value="0.264" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_potrait.xml" value="0.2" />
-        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_square.xml" value="0.264" />
+        <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/item_tv_square.xml" value="0.2" />
         <entry key="..\:/Users/RASYIDIN/AndroidStudioProjects/AndroidProject/SeriesHunt/app/src/main/res/layout/rating_container.xml" value="0.20969202898550723" />
       </map>
     </option>
