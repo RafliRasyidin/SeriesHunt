@@ -6,6 +6,7 @@ import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemRes
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.VideoResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -36,7 +37,7 @@ interface ApiService {
 
     @GET("tv/{tv_id}")
     suspend fun getDetailTvShow(
-        @Query("tv_id") tvId: Int,
+        @Path("tv_id") tvId: Int,
         @Query("api_key") apiKey: String = MOVIEDB_API_KEY
     ): TvItemResponse
 
@@ -49,13 +50,13 @@ interface ApiService {
 
     @GET("tv/{tv_id}/credits")
     suspend fun getCredits(
-        @Query("tv_id") tvId: Int,
+        @Path("tv_id") tvId: Int,
         @Query("api_key") apiKey: String = MOVIEDB_API_KEY
     ): CreditsResponse
 
     @GET("tv/{tv_id}/videos")
     suspend fun getVideos(
-        @Query("tv_id") tvId: Int,
+        @Path("tv_id") tvId: Int,
         @Query("api_key") apiKey: String = MOVIEDB_API_KEY
     ): VideoResponse
 }
