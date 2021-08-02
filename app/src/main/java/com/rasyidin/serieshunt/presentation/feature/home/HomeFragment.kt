@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.databinding.FragmentHomeBinding
 import com.rasyidin.serieshunt.presentation.adapter.OnTheAirAdapter
@@ -15,6 +17,7 @@ import com.rasyidin.serieshunt.presentation.adapter.PopularAdapter
 import com.rasyidin.serieshunt.presentation.adapter.TopRatedAdapter
 import com.rasyidin.serieshunt.presentation.adapter.TvShowAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
+import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_TV_ID
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -47,6 +50,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         setupRvTopRated()
 
         subscribeToObserver()
+
+        navigateToDetail()
 
     }
 
@@ -148,6 +153,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.contentContainer.shimmerRvTopRated
                 )
             }
+        }
+    }
+
+    private fun navigateToDetail() {
+        var args: Bundle
+        popularAdapter.onItemClick = { tvShow ->
+            args = Bundle().apply {
+                putInt(ARG_TV_ID, tvShow.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+        }
+
+        topRatedAdapter.onItemClick = { tvShow ->
+            args = Bundle().apply {
+                putInt(ARG_TV_ID, tvShow.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+        }
+
+        onTheAirAdapter.onItemClick = { tvShow ->
+            args = Bundle().apply {
+                putInt(ARG_TV_ID, tvShow.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+        }
+
+        airingTodayAdapter.onItemClick = { tvShow ->
+            args = Bundle().apply {
+                putInt(ARG_TV_ID, tvShow.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
         }
     }
 
