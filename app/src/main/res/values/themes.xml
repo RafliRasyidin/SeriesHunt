@@ -52,6 +52,6 @@
 
     <style name="TextAppearance.Body4">
         <item name="android:fontFamily">@font/product_sans_regular</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">26sp</item>
     </style>
 </resources>
