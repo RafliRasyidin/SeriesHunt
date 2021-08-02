@@ -5,10 +5,12 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
+import com.google.android.material.chip.Chip
 import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.utils.Constants.BASE_URL_IMAGE
 import com.rasyidin.serieshunt.databinding.FragmentDetailContentBinding
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
+import com.rasyidin.serieshunt.presentation.utils.toYearFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,8 +24,6 @@ class DetailContentFragment :
 
     @Inject
     lateinit var glide: RequestManager
-
-    private var tvId: Int? = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,10 +48,18 @@ class DetailContentFragment :
 
                         toolbarContainer.tvTitle.text = tvShow?.name
                         contentContainer.apply {
-                            tvDate.text = tvShow?.firstAirDate
+                            tvDate.text = tvShow?.firstAirDate?.toYearFormat()
                             tvRating.text = tvShow?.voteAverage.toString()
                             tvStatus.text = tvShow?.status
+                            for (index in tvShow!!.genres.indices) {
+                                val chip = Chip(chipGroup.context)
+                                chip.text = tvShow.genres[index].name
+                                chip.isCheckable = false
+                                chip.isCheckable = false
+                                chipGroup.addView(chip)
+                            }
                         }
+
                     }
                 }
                 is Resource.Error -> Unit
