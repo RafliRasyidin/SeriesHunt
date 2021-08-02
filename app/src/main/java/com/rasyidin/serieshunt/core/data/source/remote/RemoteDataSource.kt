@@ -2,7 +2,10 @@ package com.rasyidin.serieshunt.core.data.source.remote
 
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiResponse
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiService
+import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CastResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CrewResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.VideoItemResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -40,5 +43,19 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) :
         return responseHandle(response)
     }
 
+    suspend fun getCast(tvId: Int): Flow<ApiResponse<List<CastResponse>>> {
+        creditsResponse = apiService.getCredits(tvId)
+        return castResponseHandle(creditsResponse)
+    }
+
+    suspend fun getCrew(tvId: Int): Flow<ApiResponse<List<CrewResponse>>> {
+        creditsResponse = apiService.getCredits(tvId)
+        return crewResponseHandle(creditsResponse)
+    }
+
+    suspend fun getVideo(tvId: Int): Flow<ApiResponse<List<VideoItemResponse>>> {
+        val response = apiService.getVideos(tvId)
+        return videoResponseHandle(response)
+    }
 
 }

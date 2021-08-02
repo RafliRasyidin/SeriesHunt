@@ -1,7 +1,10 @@
 package com.rasyidin.serieshunt.core.domain.usecase
 
 import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.domain.model.Cast
+import com.rasyidin.serieshunt.core.domain.model.Crew
 import com.rasyidin.serieshunt.core.domain.model.TvShow
+import com.rasyidin.serieshunt.core.domain.model.VideoTrailer
 import kotlinx.coroutines.flow.Flow
 
 interface ITvShowUseCase {
@@ -17,4 +20,10 @@ interface ITvShowUseCase {
     fun getDetail(idTv: Int): Flow<Resource<TvShow>>
 
     fun searchTvShow(querySearch: String): Flow<Resource<List<TvShow>>>
+
+    fun getCast(tvId: Int): Flow<Resource<List<Cast>>>
+
+    fun getCrew(tvId: Int): Flow<Resource<List<Crew>>>
+
+    fun getVideos(tvId: Int): Flow<Resource<List<VideoTrailer>>>
 }
