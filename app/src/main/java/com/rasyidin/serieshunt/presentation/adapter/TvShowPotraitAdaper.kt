@@ -19,6 +19,10 @@ open class PopularAdapter @Inject constructor(private val glide: RequestManager)
             glide.load(BASE_URL_IMAGE + tvShow.posterPath)
                 .centerCrop()
                 .into(imgFilm)
+
+            root.setOnClickListener {
+                onItemClick?.invoke(tvShow)
+            }
         }
     }
 
