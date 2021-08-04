@@ -11,4 +11,7 @@ data class VideoItemResponse(
 
     @SerializedName("site")
     val site: String? = "",
+
+    @SerializedName("type")
+    val type: String? = ""
 )

@@ -88,7 +88,8 @@ fun List<VideoItemResponse>.toListVideoTrailer(): List<VideoTrailer> {
         val videoTrailer = VideoTrailer(
             id = it.id,
             key = it.key,
-            site = it.site
+            site = it.site,
+            type = it.type
         )
         data.add(videoTrailer)
     }
