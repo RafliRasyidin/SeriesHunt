@@ -12,7 +12,7 @@ class DetailViewModel @Inject constructor(private val useCase: ITvShowUseCase): 
 
     fun getCast(tvId: Int) = useCase.getCast(tvId).asLiveData(viewModelScope.coroutineContext)
 
-    fun getCrew(tvId: Int) = useCase.getCast(tvId).asLiveData(viewModelScope.coroutineContext)
+    fun getCrew(tvId: Int) = useCase.getCrew(tvId).asLiveData(viewModelScope.coroutineContext)
 
     fun getDetail(tvId: Int) = useCase.getDetail(tvId).asLiveData(viewModelScope.coroutineContext)
 
