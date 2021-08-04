@@ -31,7 +31,7 @@ class DetailPagerAdapter(
 
     companion object {
         @StringRes
-        val TAB_TITLES = intArrayOf(R.string.overview, R.string.episodes, R.string.trailers)
+        val TAB_TITLES = intArrayOf(R.string.overview, R.string.episodes, R.string.videos)
     }
 
 }
