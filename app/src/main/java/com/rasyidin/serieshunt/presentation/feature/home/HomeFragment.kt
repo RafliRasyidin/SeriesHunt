@@ -17,6 +17,7 @@ import com.rasyidin.serieshunt.presentation.adapter.PopularAdapter
 import com.rasyidin.serieshunt.presentation.adapter.TopRatedAdapter
 import com.rasyidin.serieshunt.presentation.adapter.TvShowAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
+import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_OVERVIEW
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_TV_ID
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -161,6 +162,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         popularAdapter.onItemClick = { tvShow ->
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
+                putString(ARG_OVERVIEW, tvShow.overview)
             }
             findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
         }
@@ -168,6 +170,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         topRatedAdapter.onItemClick = { tvShow ->
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
+                putString(ARG_OVERVIEW, tvShow.overview)
             }
             findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
         }
@@ -175,6 +178,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         onTheAirAdapter.onItemClick = { tvShow ->
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
+                putString(ARG_OVERVIEW, tvShow.overview)
             }
             findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
         }
@@ -182,6 +186,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         airingTodayAdapter.onItemClick = { tvShow ->
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
+                putString(ARG_OVERVIEW, tvShow.overview)
             }
             findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
         }
@@ -189,7 +194,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun showShimmerRvSquare() {
         binding.apply {
-            rvAiringToday.visibility = View.GONE
+            rvAiringToday.visibility = View.INVISIBLE
             shimmerRvAiringToday.visibility = View.VISIBLE
         }
     }
@@ -197,18 +202,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun hideShimmerRvSquare() {
         binding.apply {
             rvAiringToday.visibility = View.VISIBLE
-            shimmerRvAiringToday.visibility = View.GONE
+            shimmerRvAiringToday.visibility = View.INVISIBLE
         }
     }
 
     private fun showShimmerRvPortrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
-        recyclerView.visibility = View.GONE
+        recyclerView.visibility = View.INVISIBLE
         shimmer.visibility = View.VISIBLE
     }
 
     private fun hideShimmerRvPortrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
         recyclerView.visibility = View.VISIBLE
-        shimmer.visibility = View.GONE
+        shimmer.visibility = View.INVISIBLE
     }
 
     private fun setupRvAiringToday() = binding.rvAiringToday.apply {
