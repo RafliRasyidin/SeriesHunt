@@ -3,10 +3,12 @@ package com.rasyidin.serieshunt.presentation.feature.detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.utils.Constants.BASE_URL_IMAGE
 import com.rasyidin.serieshunt.databinding.FragmentDetailContentBinding
@@ -43,6 +45,10 @@ class DetailContentFragment :
             initViewPager()
 
             initTabLayout()
+
+            binding.toolbarContainer.imgBack.setOnClickListener {
+                findNavController().navigate(R.id.action_detailContentFragment_to_homeFragment)
+            }
         }
 
     }
