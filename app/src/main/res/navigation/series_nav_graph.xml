@@ -50,5 +50,8 @@
         <argument
             android:name="tvId"
             app:argType="integer" />
+        <argument
+            android:name="overview"
+            app:argType="string" />
     </fragment>
 </navigation>
