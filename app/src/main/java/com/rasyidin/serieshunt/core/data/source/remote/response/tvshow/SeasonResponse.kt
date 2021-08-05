@@ -3,23 +3,9 @@ package com.rasyidin.serieshunt.core.data.source.remote.response.tvshow
 import com.google.gson.annotations.SerializedName
 
 data class SeasonResponse(
-    @SerializedName("air_date")
-    val airDate: String? = "",
-
-    @SerializedName("episode_count")
-    val episodeCount: Int = 0,
 
     @SerializedName("id")
-    val id: Int = 0,
-
-    @SerializedName("name")
-    val name: String? = "",
-
-    @SerializedName("overview")
-    val overview: String? = "",
-
-    @SerializedName("poster_path")
-    val posterPath: String? = "",
+    val idSeason: Int = 0,
 
     @SerializedName("season_number")
     val seasonNumber: Int = 0
