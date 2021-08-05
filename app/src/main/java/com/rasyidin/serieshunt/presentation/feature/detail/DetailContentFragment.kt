@@ -54,31 +54,46 @@ class DetailContentFragment :
                     val tvShow = resource.data
                     tvShow?.let {
                         initViewPager(it.id, it.overview, it.numberOfSeasons)
-                    }
-                    initTabLayout()
+                        initTabLayout()
 
-                    binding.apply {
-                        glide.load(BASE_URL_IMAGE + tvShow?.backdropPath)
-                            .into(binding.toolbarContainer.imgBackdrop)
+                        binding.apply {
+                            val isBackdropNull = tvShow.backdropPath.isNullOrEmpty()
+                            if (isBackdropNull) {
+                                glide.load(R.drawable.ic_tv_placeholder)
+                                    .into(toolbarContainer.imgBackdrop)
+                            } else {
+                                glide.load(BASE_URL_IMAGE + tvShow.backdropPath)
+                                    .placeholder(R.drawable.ic_tv_placeholder)
+                                    .into(toolbarContainer.imgBackdrop)
+                            }
 
-                        glide.load(BASE_URL_IMAGE + tvShow?.posterPath)
-                            .into(binding.contentContainer.imgPoster)
+                            val isPosterNull = tvShow.posterPath.isNullOrEmpty()
+                            if (isPosterNull) {
+                                glide.load(R.drawable.ic_tv_placeholder)
+                                    .into(contentContainer.imgPoster)
+                            } else {
+                                glide.load(BASE_URL_IMAGE + tvShow.posterPath)
+                                    .placeholder(R.drawable.ic_tv_placeholder)
+                                    .into(contentContainer.imgPoster)
+                            }
 
-                        toolbarContainer.tvTitle.text = tvShow?.name
-                        contentContainer.apply {
-                            tvDate.text = tvShow?.firstAirDate?.toYearFormat()
-                            tvRating.text = tvShow?.voteAverage.toString()
-                            tvStatus.text = tvShow?.status
-                            for (index in tvShow!!.genres.indices) {
-                                val chip = Chip(chipGroup.context)
-                                chip.text = tvShow.genres[index].name
-                                chip.isCheckable = false
-                                chip.isCheckable = false
-                                chipGroup.addView(chip)
+                            toolbarContainer.tvTitle.text = tvShow.name
+                            contentContainer.apply {
+                                tvDate.text = tvShow.firstAirDate?.toYearFormat()
+                                tvRating.text = tvShow.voteAverage.toString()
+                                tvStatus.text = tvShow.status
+                                for (index in tvShow.genres.indices) {
+                                    val chip = Chip(chipGroup.context)
+                                    chip.text = tvShow.genres[index].name
+                                    chip.isCheckable = false
+                                    chip.isCheckable = false
+                                    chipGroup.addView(chip)
+                                }
                             }
                         }
-
                     }
+
+
                 }
                 is Resource.Error -> {
                     binding.pbDetail.visibility = View.GONE
