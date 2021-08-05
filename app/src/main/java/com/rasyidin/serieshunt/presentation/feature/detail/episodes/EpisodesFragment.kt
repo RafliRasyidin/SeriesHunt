@@ -14,7 +14,6 @@ import com.rasyidin.serieshunt.presentation.adapter.TvEpisodeAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class EpisodesFragment : BaseFragment<FragmentEpisodesBinding>(FragmentEpisodesBinding::inflate),
@@ -22,8 +21,7 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding>(FragmentEpisodesB
 
     private val viewModel: DetailViewModel by viewModels()
 
-    @Inject
-    lateinit var tvEpisodeAdapter: TvEpisodeAdapter
+    private val tvEpisodeAdapter: TvEpisodeAdapter by lazy { TvEpisodeAdapter() }
 
     private var seasonNumber = 1
     private var tvId = 0
@@ -85,7 +83,6 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding>(FragmentEpisodesB
     private fun setupRv() = binding.rvEpisode.apply {
         adapter = tvEpisodeAdapter
         layoutManager = LinearLayoutManager(activity)
-        setHasFixedSize(true)
     }
 
     companion object {
