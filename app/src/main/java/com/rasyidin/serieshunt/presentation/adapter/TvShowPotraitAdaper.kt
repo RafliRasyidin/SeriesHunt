@@ -16,9 +16,15 @@ open class PopularAdapter @Inject constructor(private val glide: RequestManager)
         val binding = ItemTvPortraitBinding.bind(holder.itemView)
         with(binding) {
             ratingContainer.tvRating.text = tvShow.voteAverage.toString()
-            glide.load(BASE_URL_IMAGE + tvShow.posterPath)
-                .centerCrop()
-                .into(imgFilm)
+
+            if (tvShow.backdropPath.isNullOrEmpty()) {
+                glide.load(R.drawable.ic_tv_placeholder).into(imgFilm)
+            } else {
+                glide.load(BASE_URL_IMAGE + tvShow.backdropPath)
+                    .placeholder(R.drawable.ic_tv_placeholder)
+                    .centerCrop()
+                    .into(imgFilm)
+            }
 
             root.setOnClickListener {
                 onItemClick?.invoke(tvShow)

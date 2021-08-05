@@ -16,7 +16,13 @@ class CastAdapter @Inject constructor(private val glide: RequestManager) :
         val cast = getItem(position)
         val binding = ItemCreditsBinding.bind(holder.itemView)
         with(binding) {
-            glide.load(BASE_URL_IMAGE + cast.profilePath).into(imgCredits)
+            if (cast.profilePath.isNullOrEmpty()) {
+                glide.load(R.drawable.ic_star_placeholder).into(imgCredits)
+            } else {
+                glide.load(BASE_URL_IMAGE + cast.profilePath)
+                    .placeholder(R.drawable.ic_star_placeholder)
+                    .into(imgCredits)
+            }
             tvName.text = cast.name
             tvCharacter.text = cast.character
 

@@ -9,13 +9,23 @@ import com.rasyidin.serieshunt.databinding.ItemCreditsBinding
 import com.rasyidin.serieshunt.presentation.adapter.BaseAdapter
 import javax.inject.Inject
 
-class CrewAdapter @Inject constructor(private val glide: RequestManager): BaseAdapter<Crew>(R.layout.item_credits, DiffCallback) {
+class CrewAdapter @Inject constructor(private val glide: RequestManager) :
+    BaseAdapter<Crew>(R.layout.item_credits, DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val crew = getItem(position)
         val binding = ItemCreditsBinding.bind(holder.itemView)
         with(binding) {
-            glide.load(BASE_URL_IMAGE + crew.profilePath).into(imgCredits)
+
+            if (crew.profilePath.isNullOrEmpty()) {
+                glide.load(R.drawable.ic_star_placeholder)
+                    .into(imgCredits)
+            } else {
+                glide.load(BASE_URL_IMAGE + crew.profilePath)
+                    .placeholder(R.drawable.ic_star_placeholder)
+                    .into(imgCredits)
+            }
+
             tvName.text = crew.name
             tvCharacter.text = crew.job
 
@@ -25,7 +35,7 @@ class CrewAdapter @Inject constructor(private val glide: RequestManager): BaseAd
         }
     }
 
-    object DiffCallback : DiffUtil.ItemCallback<Crew>(){
+    object DiffCallback : DiffUtil.ItemCallback<Crew>() {
         override fun areItemsTheSame(oldItem: Crew, newItem: Crew): Boolean {
             return oldItem.id == newItem.id
         }

@@ -19,9 +19,14 @@ class TvShowAdapter @Inject constructor(private val glide: RequestManager) :
                 tvRating.text = it.voteAverage.toString()
                 tvTitle.text = it.name
 
-                glide.load(BASE_URL_IMAGE + it.backdropPath)
-                    .centerCrop()
-                    .into(imgPoster)
+                if (it.backdropPath.isNullOrEmpty()) {
+                    glide.load(R.drawable.ic_tv_placeholder).into(imgPoster)
+                } else {
+                    glide.load(BASE_URL_IMAGE + it.backdropPath)
+                        .placeholder(R.drawable.ic_tv_placeholder)
+                        .centerCrop()
+                        .into(imgPoster)
+                }
 
                 root.setOnClickListener {
                     onItemClick?.invoke(tvShow)
