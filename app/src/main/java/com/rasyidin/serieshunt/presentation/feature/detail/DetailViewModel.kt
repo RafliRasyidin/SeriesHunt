@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val useCase: ITvShowUseCase): ViewModel() {
+class DetailViewModel @Inject constructor(private val useCase: ITvShowUseCase) : ViewModel() {
 
     fun getCast(tvId: Int) = useCase.getCast(tvId).asLiveData(viewModelScope.coroutineContext)
 
@@ -17,5 +17,8 @@ class DetailViewModel @Inject constructor(private val useCase: ITvShowUseCase): 
     fun getDetail(tvId: Int) = useCase.getDetail(tvId).asLiveData(viewModelScope.coroutineContext)
 
     fun getVideos(tvId: Int) = useCase.getVideos(tvId).asLiveData(viewModelScope.coroutineContext)
+
+    fun getTvSeason(tvId: Int, seasonNumber: Int) =
+        useCase.getTvSeasons(tvId, seasonNumber).asLiveData(viewModelScope.coroutineContext)
 
 }
