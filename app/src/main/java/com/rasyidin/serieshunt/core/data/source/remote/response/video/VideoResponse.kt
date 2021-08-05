@@ -1,4 +1,4 @@
-package com.rasyidin.serieshunt.core.data.source.remote.response.tvshow
+package com.rasyidin.serieshunt.core.data.source.remote.response.video
 
 import com.google.gson.annotations.SerializedName
 
