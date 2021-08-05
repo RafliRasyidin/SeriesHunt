@@ -20,7 +20,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesHttpClient() = OkHttpClient.Builder()
+    fun providesHttpClient(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
