@@ -2,6 +2,7 @@ package com.rasyidin.serieshunt.presentation.feature.detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -49,6 +50,7 @@ class DetailContentFragment :
         viewModel.getDetail(args.tvId).observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    binding.pbDetail.visibility = View.GONE
                     val tvShow = resource.data
                     tvShow?.let {
                         initViewPager(it.id, it.overview, it.numberOfSeasons)
@@ -78,8 +80,11 @@ class DetailContentFragment :
 
                     }
                 }
-                is Resource.Error -> Unit
-                is Resource.Loading -> Unit
+                is Resource.Error -> {
+                    binding.pbDetail.visibility = View.GONE
+                    Toast.makeText(activity, "Something Wrong!", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Loading -> binding.pbDetail.visibility = View.VISIBLE
             }
 
         }
