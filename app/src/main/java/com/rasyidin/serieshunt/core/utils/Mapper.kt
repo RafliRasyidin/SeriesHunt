@@ -2,12 +2,10 @@ package com.rasyidin.serieshunt.core.utils
 
 import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CastResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CrewResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.EpisodeResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
-import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.VideoItemResponse
-import com.rasyidin.serieshunt.core.domain.model.Cast
-import com.rasyidin.serieshunt.core.domain.model.Crew
-import com.rasyidin.serieshunt.core.domain.model.TvShow
-import com.rasyidin.serieshunt.core.domain.model.VideoTrailer
+import com.rasyidin.serieshunt.core.data.source.remote.response.video.VideoItemResponse
+import com.rasyidin.serieshunt.core.domain.model.*
 
 fun List<TvItemResponse>.toListTvShow(): List<TvShow> {
     val data = ArrayList<TvShow>()
@@ -92,6 +90,21 @@ fun List<VideoItemResponse>.toListVideoTrailer(): List<VideoTrailer> {
             type = it.type
         )
         data.add(videoTrailer)
+    }
+    return data
+}
+
+fun List<EpisodeResponse>.toListTvEpisode(): List<TvEpisode> {
+    val data = ArrayList<TvEpisode>()
+    this.map {
+        val tvEpisode = TvEpisode(
+            airDate = it.airDate,
+            episodeNumber = it.episodeNumber,
+            id = it.id,
+            name = it.name,
+            posterPath = it.posterPath
+        )
+        data.add(tvEpisode)
     }
     return data
 }
