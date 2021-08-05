@@ -1,10 +1,7 @@
 package com.rasyidin.serieshunt.core.domain.usecase
 
 import com.rasyidin.serieshunt.core.data.Resource
-import com.rasyidin.serieshunt.core.domain.model.Cast
-import com.rasyidin.serieshunt.core.domain.model.Crew
-import com.rasyidin.serieshunt.core.domain.model.TvShow
-import com.rasyidin.serieshunt.core.domain.model.VideoTrailer
+import com.rasyidin.serieshunt.core.domain.model.*
 import com.rasyidin.serieshunt.core.domain.repository.ITvShowRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -44,5 +41,9 @@ class TvShowInteractors @Inject constructor(private val tvShowRepository: ITvSho
 
     override fun getVideos(tvId: Int): Flow<Resource<List<VideoTrailer>>> {
         return tvShowRepository.getVideos(tvId)
+    }
+
+    override fun getTvSeasons(tvId: Int, seasonNumber: Int): Flow<Resource<List<TvEpisode>>> {
+        return tvShowRepository.getTvSeasons(tvId, seasonNumber)
     }
 }

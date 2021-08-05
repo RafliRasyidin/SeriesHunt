@@ -1,11 +1,9 @@
 package com.rasyidin.serieshunt.core.data
 
+import android.util.Log
 import com.rasyidin.serieshunt.core.data.source.remote.RemoteDataSource
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiResponse
-import com.rasyidin.serieshunt.core.domain.model.Cast
-import com.rasyidin.serieshunt.core.domain.model.Crew
-import com.rasyidin.serieshunt.core.domain.model.TvShow
-import com.rasyidin.serieshunt.core.domain.model.VideoTrailer
+import com.rasyidin.serieshunt.core.domain.model.*
 import com.rasyidin.serieshunt.core.domain.repository.ITvShowRepository
 import com.rasyidin.serieshunt.core.utils.*
 import kotlinx.coroutines.flow.Flow
@@ -143,5 +141,21 @@ class TvShowRepository @Inject constructor(private val remoteDataSource: RemoteD
                 }
             }
         } as Flow<Resource<List<VideoTrailer>>>
+    }
+
+    override fun getTvSeasons(tvId: Int, seasonNumber: Int): Flow<Resource<List<TvEpisode>>> {
+        return flow {
+            emit(Resource.Loading())
+            remoteDataSource.getTvSeasons(tvId, seasonNumber).collect { apiResponse ->
+                when (apiResponse) {
+                    ApiResponse.Empty -> emit(Resource.Success<List<TvEpisode>>(emptyList()))
+                    is ApiResponse.Error -> {
+                        emit(Resource.Error(null, apiResponse.message))
+                        Log.e("EpisodesFragment", apiResponse.message)
+                    }
+                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toListTvEpisode()))
+                }
+            }
+        } as Flow<Resource<List<TvEpisode>>>
     }
 }
