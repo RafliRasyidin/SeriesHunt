@@ -21,7 +21,6 @@ object AppModule {
         Glide.with(context)
             .setDefaultRequestOptions(
                 RequestOptions()
-                    .placeholder(R.drawable.ic_tv_placeholder)
                     .error(R.drawable.ic_broken_image)
             )
 
