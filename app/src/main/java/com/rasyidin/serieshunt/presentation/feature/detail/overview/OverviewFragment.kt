@@ -3,6 +3,7 @@ package com.rasyidin.serieshunt.presentation.feature.detail.overview
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.databinding.FragmentOverviewBinding
 import com.rasyidin.serieshunt.presentation.adapter.credits.CreditsPagerAdapter
 import com.rasyidin.serieshunt.presentation.adapter.credits.CreditsPagerAdapter.Companion.TAB_TITLES
@@ -17,7 +18,12 @@ class OverviewFragment : BaseFragment<FragmentOverviewBinding>(FragmentOverviewB
 
         val overview = arguments?.getString(ARG_OVERVIEW)
         val tvId = arguments?.getInt(ARG_ID_TV)
-        binding.tvOverview.text = overview
+        if (overview.isNullOrEmpty()) {
+            binding.tvOverview.text = getString(R.string.empty_overview)
+        } else {
+            binding.tvOverview.text = overview
+        }
+
         tvId?.let {
             initViewPager(it)
         }

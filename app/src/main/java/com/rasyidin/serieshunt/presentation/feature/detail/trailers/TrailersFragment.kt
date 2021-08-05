@@ -43,7 +43,19 @@ class TrailersFragment : BaseFragment<FragmentTrailersBinding>(FragmentTrailersB
             when (resource) {
                 is Resource.Error -> Unit
                 is Resource.Loading -> Unit
-                is Resource.Success -> videoAdapter.submitList(resource.data)
+                is Resource.Success -> {
+                    val data = resource.data
+                    if (data!!.isEmpty()) {
+                        binding.lottieVideo.visibility = View.VISIBLE
+                        binding.tvEmpty.visibility = View.VISIBLE
+                        binding.rvTrailer.visibility = View.GONE
+                    } else {
+                        videoAdapter.submitList(data)
+                        binding.rvTrailer.visibility = View.VISIBLE
+                        binding.lottieVideo.visibility = View.GONE
+                        binding.tvEmpty.visibility = View.GONE
+                    }
+                }
             }
         }
     }

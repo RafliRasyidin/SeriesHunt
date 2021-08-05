@@ -11,4 +11,6 @@
     <string name="synopsis">Synopsis</string>
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>
+    <string name="empty_overview">Synopsis Unavailable</string>
+    <string name="video_unavailable">Video Unavailable</string>
 </resources>
