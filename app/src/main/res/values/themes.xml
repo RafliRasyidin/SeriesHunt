@@ -36,6 +36,11 @@
         <item name="android:textSize">30sp</item>
     </style>
 
+    <style name="TextAppearance.Headline4">
+        <item name="android:fontFamily">@font/product_sans_bold</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
     <style name="TextAppearance.Body1">
         <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
