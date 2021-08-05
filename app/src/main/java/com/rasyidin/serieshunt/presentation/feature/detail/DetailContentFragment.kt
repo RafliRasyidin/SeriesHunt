@@ -32,19 +32,11 @@ class DetailContentFragment :
 
     private lateinit var mediator: TabLayoutMediator
 
-    private var overview: String? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
 
-            overview = args.overview
-
             observeData()
-
-            initViewPager()
-
-            initTabLayout()
 
             binding.toolbarContainer.imgBack.setOnClickListener {
                 findNavController().navigate(R.id.action_detailContentFragment_to_homeFragment)
@@ -58,6 +50,10 @@ class DetailContentFragment :
             when (resource) {
                 is Resource.Success -> {
                     val tvShow = resource.data
+                    tvShow?.let {
+                        initViewPager(it.id, it.overview, it.numberOfSeasons)
+                    }
+                    initTabLayout()
 
                     binding.apply {
                         glide.load(BASE_URL_IMAGE + tvShow?.backdropPath)
@@ -90,9 +86,9 @@ class DetailContentFragment :
 
     }
 
-    private fun initViewPager() {
+    private fun initViewPager(tvId: Int, overview: String?, seasonOfNumber: Int) {
         val detailPagerAdapter: DetailPagerAdapter by lazy {
-            DetailPagerAdapter(childFragmentManager, lifecycle, args.tvId, overview)
+            DetailPagerAdapter(childFragmentManager, lifecycle, tvId, overview, seasonOfNumber)
         }
         binding.vpContainer.vp.apply {
             isUserInputEnabled = false
