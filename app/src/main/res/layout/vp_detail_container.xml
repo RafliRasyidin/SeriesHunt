@@ -9,6 +9,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabTextAppearance="@style/TextAppearance.Headline1"
         app:tabIndicatorColor="@color/orange_500"
         app:tabTextColor="@android:color/darker_gray"
         app:tabSelectedTextColor="@color/orange_500"
