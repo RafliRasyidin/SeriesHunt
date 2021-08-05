@@ -14,7 +14,8 @@ class DetailPagerAdapter(
     fm: FragmentManager,
     lifecycle: Lifecycle,
     private val idTv: Int,
-    private val overview: String?
+    private val overview: String?,
+    private val numberOfSeason: Int
 ) : FragmentStateAdapter(fm, lifecycle) {
 
     override fun getItemCount(): Int {
@@ -24,7 +25,7 @@ class DetailPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> OverviewFragment.newInstance(idTv, overview)
-            1 -> EpisodesFragment.newInstance(idTv)
+            1 -> EpisodesFragment.newInstance(idTv, numberOfSeason)
             else -> TrailersFragment.newInstance(idTv)
         }
     }
