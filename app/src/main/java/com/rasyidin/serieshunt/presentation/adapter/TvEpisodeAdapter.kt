@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.domain.model.TvEpisode
 import com.rasyidin.serieshunt.databinding.ItemEpisodeBinding
+import com.rasyidin.serieshunt.presentation.utils.toDateMonthYearFormat
 
 class TvEpisodeAdapter :
     BaseAdapter<TvEpisode>(R.layout.item_episode, DiffCallback) {
@@ -13,7 +14,7 @@ class TvEpisodeAdapter :
         val binding = ItemEpisodeBinding.bind(holder.itemView)
         with(binding) {
             tvTitle.text = tvEpisode.name
-            tvDate.text = tvEpisode.airDate
+            tvDate.text = tvEpisode.airDate?.toDateMonthYearFormat()
             tvNumberEpisode.text = tvEpisode.episodeNumber.toString()
 
             root.setOnClickListener {
