@@ -16,7 +16,7 @@ import com.rasyidin.serieshunt.databinding.FragmentDetailContentBinding
 import com.rasyidin.serieshunt.presentation.adapter.DetailPagerAdapter
 import com.rasyidin.serieshunt.presentation.adapter.DetailPagerAdapter.Companion.TAB_TITLES
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
-import com.rasyidin.serieshunt.presentation.utils.toYearFormat
+import com.rasyidin.serieshunt.presentation.utils.toOnlyYearFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -79,7 +79,7 @@ class DetailContentFragment :
 
                             toolbarContainer.tvTitle.text = tvShow.name
                             contentContainer.apply {
-                                tvDate.text = tvShow.firstAirDate?.toYearFormat()
+                                tvDate.text = tvShow.firstAirDate?.toOnlyYearFormat()
                                 tvRating.text = tvShow.voteAverage.toString()
                                 tvStatus.text = tvShow.status
                                 for (index in tvShow.genres.indices) {
