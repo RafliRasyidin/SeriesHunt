@@ -19,7 +19,14 @@ class TvSearchAdapter @Inject constructor(private val glide: RequestManager) :
                 .placeholder(R.drawable.ic_tv_placeholder)
                 .into(imgPoster)
             tvTitle.text = tvShow.name
-            tvDate.text = tvShow.firstAirDate?.toOnlyYearFormat()
+            tvRating.text = tvShow.voteAverage.toString()
+            tvShow.firstAirDate?.let {
+                if (it.isEmpty()) {
+                    tvDate.text = tvShow.firstAirDate
+                } else {
+                    tvDate.text = tvShow.firstAirDate.toOnlyYearFormat()
+                }
+            }
 
             root.setOnClickListener {
                 onItemClick?.invoke(tvShow)
