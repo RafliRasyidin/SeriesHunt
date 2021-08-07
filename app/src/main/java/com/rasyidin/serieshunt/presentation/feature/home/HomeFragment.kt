@@ -54,6 +54,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         navigateToDetail()
 
+        navigateToSearchTv()
+    }
+
+    private fun navigateToSearchTv() {
+        binding.contentContainer.etSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
     }
 
     private fun subscribeToObserver() {
