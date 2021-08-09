@@ -54,14 +54,14 @@
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/img_love"
+        android:id="@+id/img_share"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_outlined_heart"
+        app:srcCompat="@drawable/ic_share"
         tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
