@@ -19,5 +19,6 @@ data class TvShow(
     val seasonResponses: List<SeasonResponse>,
     val status: String? = "",
     val voteAverage: Double = 0.0,
-    val voteCount: Int = 0
+    val voteCount: Int = 0,
+    val homepage: String? = ""
 )

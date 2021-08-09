@@ -49,5 +49,8 @@ data class TvItemResponse(
     val voteAverage: Double = 0.0,
 
     @SerializedName("vote_count")
-    val voteCount: Int = 0
+    val voteCount: Int = 0,
+
+    @SerializedName("homepage")
+    val homepage: String? = "",
 )

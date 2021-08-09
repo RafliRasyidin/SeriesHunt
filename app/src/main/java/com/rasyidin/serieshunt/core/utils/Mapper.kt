@@ -26,7 +26,8 @@ fun List<TvItemResponse>.toListTvShow(): List<TvShow> {
             seasonResponses = emptyList(),
             status = it.status,
             voteAverage = it.voteAverage,
-            voteCount = it.voteCount
+            voteCount = it.voteCount,
+            homepage = it.homepage
         )
         data.add(tvShow)
     }
@@ -49,7 +50,8 @@ fun TvItemResponse.toTvShow() = TvShow(
     seasonResponses = this.seasonResponses,
     status = this.status,
     voteAverage = this.voteAverage,
-    voteCount = this.voteCount
+    voteCount = this.voteCount,
+    homepage = this.homepage
 )
 
 fun List<CastResponse>.toListCast(): List<Cast> {
