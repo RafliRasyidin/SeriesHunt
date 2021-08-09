@@ -18,7 +18,9 @@ open class PopularAdapter @Inject constructor(private val glide: RequestManager)
             ratingContainer.tvRating.text = tvShow.voteAverage.toString()
 
             if (tvShow.backdropPath.isNullOrEmpty()) {
-                glide.load(R.drawable.ic_tv_placeholder).into(imgFilm)
+                glide.load(R.drawable.ic_tv_placeholder)
+                    .fitCenter()
+                    .into(imgFilm)
             } else {
                 glide.load(BASE_URL_IMAGE + tvShow.backdropPath)
                     .placeholder(R.drawable.ic_tv_placeholder)

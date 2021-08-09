@@ -20,7 +20,9 @@ class TvShowAdapter @Inject constructor(private val glide: RequestManager) :
                 tvTitle.text = it.name
 
                 if (it.backdropPath.isNullOrEmpty()) {
-                    glide.load(R.drawable.ic_tv_placeholder).into(imgPoster)
+                    glide.load(R.drawable.ic_tv_placeholder)
+                        .fitCenter()
+                        .into(imgPoster)
                 } else {
                     glide.load(BASE_URL_IMAGE + it.backdropPath)
                         .placeholder(R.drawable.ic_tv_placeholder)

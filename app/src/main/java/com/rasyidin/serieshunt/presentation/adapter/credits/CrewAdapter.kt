@@ -19,10 +19,12 @@ class CrewAdapter @Inject constructor(private val glide: RequestManager) :
 
             if (crew.profilePath.isNullOrEmpty()) {
                 glide.load(R.drawable.ic_star_placeholder)
+                    .fitCenter()
                     .into(imgCredits)
             } else {
                 glide.load(BASE_URL_IMAGE + crew.profilePath)
                     .placeholder(R.drawable.ic_star_placeholder)
+                    .centerCrop()
                     .into(imgCredits)
             }
 

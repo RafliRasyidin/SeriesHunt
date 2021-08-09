@@ -24,7 +24,6 @@
             android:id="@+id/img_credits"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
             app:srcCompat="@color/orange_500"
             tools:ignore="ContentDescription" />
 
