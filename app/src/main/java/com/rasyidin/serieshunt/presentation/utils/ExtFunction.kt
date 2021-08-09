@@ -1,5 +1,6 @@
 package com.rasyidin.serieshunt.presentation.utils
 
+import android.view.View
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,4 +23,12 @@ fun String.toDateMonthYearFormat(): String {
     val outputFormat = SimpleDateFormat("dd MMMM y", Locale.getDefault())
     val date = inputFormat.parse(this)
     return outputFormat.format(date)
+}
+
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    this.visibility = View.INVISIBLE
 }
