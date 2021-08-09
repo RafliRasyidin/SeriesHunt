@@ -15,6 +15,8 @@ import com.rasyidin.serieshunt.presentation.adapter.TvSearchAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_OVERVIEW
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_TV_ID
+import com.rasyidin.serieshunt.presentation.utils.hide
+import com.rasyidin.serieshunt.presentation.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -76,18 +78,39 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             tvShow.observe(viewLifecycleOwner) { resource ->
                 when (resource) {
                     is Resource.Error -> {
-                        hideLoading()
+                        binding.apply {
+                            shimmerRvSearch.hide()
+                            rvSearch.hide()
+                            lottieEmptyTv.hide()
+                            tvEmpty.hide()
+                        }
                         Toast.makeText(activity, "Something Wrong!", Toast.LENGTH_SHORT).show()
                     }
-                    is Resource.Loading -> showLoading()
+                    is Resource.Loading -> {
+                        binding.apply {
+                            shimmerRvSearch.show()
+                            rvSearch.hide()
+                            lottieEmptyTv.hide()
+                            tvEmpty.hide()
+                        }
+                    }
                     is Resource.Success -> {
-                        hideLoading()
+                        binding.shimmerRvSearch.hide()
                         val data = resource.data
                         data?.let {
                             if (data.isNotEmpty()) {
+                                binding.apply {
+                                    rvSearch.show()
+                                    lottieEmptyTv.hide()
+                                    tvEmpty.hide()
+                                }
                                 tvSearchAdapter.submitList(data)
                             } else {
-                                Toast.makeText(activity, "Not Found!", Toast.LENGTH_SHORT).show()
+                                binding.apply {
+                                    rvSearch.hide()
+                                    lottieEmptyTv.show()
+                                    tvEmpty.show()
+                                }
                             }
                         }
 
@@ -95,20 +118,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                 }
             }
 
-        }
-    }
-
-    private fun showLoading() {
-        binding.apply {
-            shimmerRvSearch.visibility = View.VISIBLE
-            rvSearch.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun hideLoading() {
-        binding.apply {
-            shimmerRvSearch.visibility = View.INVISIBLE
-            rvSearch.visibility = View.VISIBLE
         }
     }
 
