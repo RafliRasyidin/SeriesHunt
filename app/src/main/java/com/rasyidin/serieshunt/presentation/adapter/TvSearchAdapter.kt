@@ -15,17 +15,22 @@ class TvSearchAdapter @Inject constructor(private val glide: RequestManager) :
         val tvShow = getItem(position)
         val binding = ItemSearchBinding.bind(holder.itemView)
         with(binding) {
-            glide.load(BASE_URL_IMAGE + tvShow.posterPath)
-                .placeholder(R.drawable.ic_tv_placeholder)
-                .into(imgPoster)
+            val isPosterPathNullOrEmpty = tvShow.posterPath.isNullOrEmpty()
+            if (isPosterPathNullOrEmpty) {
+                glide.load(R.drawable.ic_tv_placeholder)
+                    .fitCenter()
+                    .into(imgPoster)
+            } else {
+                glide.load(BASE_URL_IMAGE + tvShow.posterPath)
+                    .placeholder(R.drawable.ic_tv_placeholder)
+                    .centerCrop()
+                    .into(imgPoster)
+            }
+
             tvTitle.text = tvShow.name
             tvRating.text = tvShow.voteAverage.toString()
             tvShow.firstAirDate?.let {
-                if (it.isEmpty()) {
-                    tvDate.text = tvShow.firstAirDate
-                } else {
-                    tvDate.text = tvShow.firstAirDate.toOnlyYearFormat()
-                }
+                tvDate.text = it.toOnlyYearFormat()
             }
 
             root.setOnClickListener {
