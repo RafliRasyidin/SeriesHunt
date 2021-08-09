@@ -75,9 +75,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         viewModel.searchTvShow.observe(viewLifecycleOwner) { tvShow ->
             tvShow.observe(viewLifecycleOwner) { resource ->
                 when (resource) {
-                    is Resource.Error -> Toast.makeText(activity, "Something Wrong!", Toast.LENGTH_SHORT).show()
-                    is Resource.Loading -> Unit
+                    is Resource.Error -> {
+                        hideLoading()
+                        Toast.makeText(activity, "Something Wrong!", Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> showLoading()
                     is Resource.Success -> {
+                        hideLoading()
                         val data = resource.data
                         data?.let {
                             if (data.isNotEmpty()) {
@@ -91,6 +95,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                 }
             }
 
+        }
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            shimmerRvSearch.visibility = View.VISIBLE
+            rvSearch.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun hideLoading() {
+        binding.apply {
+            shimmerRvSearch.visibility = View.INVISIBLE
+            rvSearch.visibility = View.VISIBLE
         }
     }
 
