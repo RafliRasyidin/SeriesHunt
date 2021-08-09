@@ -59,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_popular">
 
-        <include layout="@layout/shimmer_item_tv_potrait"/>
+        <include layout="@layout/shimmer_tv_potrait"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <TextView
@@ -99,7 +99,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_on_the_air">
 
-        <include layout="@layout/shimmer_item_tv_potrait"/>
+        <include layout="@layout/shimmer_tv_potrait"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <TextView
@@ -139,7 +139,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_top_rated">
 
-        <include layout="@layout/shimmer_item_tv_potrait"/>
+        <include layout="@layout/shimmer_tv_potrait"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
 
