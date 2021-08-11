@@ -9,7 +9,7 @@ import com.rasyidin.serieshunt.presentation.utils.toOnlyYearFormat
 import javax.inject.Inject
 
 class TvSearchAdapter @Inject constructor(private val glide: RequestManager) :
-    BaseAdapter<TvShow>(R.layout.item_search, TvShowAdapter.DiffCallback) {
+    BaseAdapter<TvShow, ItemSearchBinding>(ItemSearchBinding::inflate, TvShowAdapter.DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val tvShow = getItem(position)
@@ -34,7 +34,7 @@ class TvSearchAdapter @Inject constructor(private val glide: RequestManager) :
             }
 
             root.setOnClickListener {
-                onItemClick?.invoke(tvShow)
+                onItemClick?.invoke(tvShow, imgPoster, tvTitle)
             }
         }
     }

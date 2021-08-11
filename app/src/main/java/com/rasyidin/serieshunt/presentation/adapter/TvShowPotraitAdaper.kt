@@ -9,7 +9,7 @@ import com.rasyidin.serieshunt.databinding.ItemTvPortraitBinding
 import javax.inject.Inject
 
 open class PopularAdapter @Inject constructor(private val glide: RequestManager) :
-    BaseAdapter<TvShow>(R.layout.item_tv_portrait, DiffCallback) {
+    BaseAdapter<TvShow, ItemTvPortraitBinding>(ItemTvPortraitBinding::inflate, DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val tvShow = getItem(position)
@@ -29,7 +29,7 @@ open class PopularAdapter @Inject constructor(private val glide: RequestManager)
             }
 
             root.setOnClickListener {
-                onItemClick?.invoke(tvShow)
+                onItemClick?.invoke(tvShow, imgFilm, null)
             }
         }
     }

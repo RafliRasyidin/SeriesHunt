@@ -1,13 +1,12 @@
 package com.rasyidin.serieshunt.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.domain.model.TvEpisode
 import com.rasyidin.serieshunt.databinding.ItemEpisodeBinding
 import com.rasyidin.serieshunt.presentation.utils.toDateMonthYearFormat
 
 class TvEpisodeAdapter :
-    BaseAdapter<TvEpisode>(R.layout.item_episode, DiffCallback) {
+    BaseAdapter<TvEpisode, ItemEpisodeBinding>(ItemEpisodeBinding::inflate, DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val tvEpisode = getItem(position)
@@ -18,7 +17,7 @@ class TvEpisodeAdapter :
             tvNumberEpisode.text = tvEpisode.episodeNumber.toString()
 
             root.setOnClickListener {
-                onItemClick?.invoke(tvEpisode)
+                onItemClick?.invoke(tvEpisode, null, null)
             }
         }
     }

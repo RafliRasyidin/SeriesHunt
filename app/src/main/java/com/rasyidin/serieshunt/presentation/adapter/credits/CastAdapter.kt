@@ -10,7 +10,7 @@ import com.rasyidin.serieshunt.presentation.adapter.BaseAdapter
 import javax.inject.Inject
 
 class CastAdapter @Inject constructor(private val glide: RequestManager) :
-    BaseAdapter<Cast>(R.layout.item_credits, DiffCallback) {
+    BaseAdapter<Cast, ItemCreditsBinding>(ItemCreditsBinding::inflate, DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val cast = getItem(position)
@@ -30,7 +30,7 @@ class CastAdapter @Inject constructor(private val glide: RequestManager) :
             tvCharacter.text = cast.character
 
             root.setOnClickListener {
-                onItemClick?.invoke(cast)
+                onItemClick?.invoke(cast, imgCredits, tvName)
             }
         }
     }

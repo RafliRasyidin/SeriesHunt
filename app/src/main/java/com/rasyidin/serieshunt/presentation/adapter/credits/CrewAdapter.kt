@@ -10,7 +10,7 @@ import com.rasyidin.serieshunt.presentation.adapter.BaseAdapter
 import javax.inject.Inject
 
 class CrewAdapter @Inject constructor(private val glide: RequestManager) :
-    BaseAdapter<Crew>(R.layout.item_credits, DiffCallback) {
+    BaseAdapter<Crew, ItemCreditsBinding>(ItemCreditsBinding::inflate, DiffCallback) {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val crew = getItem(position)
@@ -32,7 +32,7 @@ class CrewAdapter @Inject constructor(private val glide: RequestManager) :
             tvCharacter.text = crew.job
 
             root.setOnClickListener {
-                onItemClick?.invoke(crew)
+                onItemClick?.invoke(crew, imgCredits, tvName)
             }
         }
     }
