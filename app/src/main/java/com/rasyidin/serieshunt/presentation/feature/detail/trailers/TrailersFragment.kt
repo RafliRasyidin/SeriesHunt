@@ -31,7 +31,7 @@ class TrailersFragment : BaseFragment<FragmentTrailersBinding>(FragmentTrailersB
             observeVideos(tvId)
         }
 
-        videoAdapter.onItemClick = { videoTrailer ->
+        videoAdapter.onItemClick = { videoTrailer, _, _ ->
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BASE_YOUTUBE_URL + videoTrailer.key))
             startActivity(intent)
         }
