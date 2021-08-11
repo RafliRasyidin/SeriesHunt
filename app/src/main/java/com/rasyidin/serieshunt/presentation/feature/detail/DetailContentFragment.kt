@@ -4,10 +4,15 @@ import android.content.Intent
 import android.content.Intent.*
 import android.os.Bundle
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.ChangeBounds
+import androidx.transition.Transition
+import androidx.transition.TransitionInflater
 import com.bumptech.glide.RequestManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
@@ -19,6 +24,7 @@ import com.rasyidin.serieshunt.databinding.FragmentDetailContentBinding
 import com.rasyidin.serieshunt.presentation.adapter.DetailPagerAdapter
 import com.rasyidin.serieshunt.presentation.adapter.DetailPagerAdapter.Companion.TAB_TITLES
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
+import com.rasyidin.serieshunt.presentation.utils.Constants.ANIMATION_DURATION
 import com.rasyidin.serieshunt.presentation.utils.toOnlyYearFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -38,9 +44,29 @@ class DetailContentFragment :
 
     private lateinit var mediator: TabLayoutMediator
 
+    @Inject
+    lateinit var bounds: ChangeBounds
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val animation =
+            TransitionInflater.from(activity).inflateTransition(android.R.transition.move)
+
+        sharedElementEnterTransition = animation.setDuration(ANIMATION_DURATION)
+        sharedElementReturnTransition = exitTransition()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+            ViewCompat.setTransitionName(
+                binding.contentContainer.imgPoster,
+                getString(R.string.imageTransition).plus(args.tvId)
+            )
+            ViewCompat.setTransitionName(
+                binding.toolbarContainer.tvTitle,
+                getString(R.string.TitleTransition).plus(args.tvId)
+            )
 
             observeData()
 
@@ -51,6 +77,14 @@ class DetailContentFragment :
             }
         }
 
+    }
+
+    private fun exitTransition(): Transition {
+        bounds.apply {
+            interpolator = DecelerateInterpolator()
+            duration = ANIMATION_DURATION
+        }
+        return bounds
     }
 
     private fun shareTvShow() {
@@ -119,8 +153,6 @@ class DetailContentFragment :
                             }
                         }
                     }
-
-
                 }
                 is Resource.Error -> {
                     binding.pbDetail.visibility = View.GONE

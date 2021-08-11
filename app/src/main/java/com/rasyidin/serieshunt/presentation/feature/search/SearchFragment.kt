@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rasyidin.serieshunt.R
@@ -29,17 +31,17 @@ import javax.inject.Inject
 @ObsoleteCoroutinesApi
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
-    
+
     private val viewModel: SearchViewModel by viewModels()
-    
+
     @Inject
     lateinit var tvSearchAdapter: TvSearchAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         setupRv()
-        
+
         searchTvShow()
 
         observeSearchTv()
@@ -48,12 +50,29 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     private fun navigateToDetail() {
-        tvSearchAdapter.onItemClick = { tvShow ->
+        tvSearchAdapter.onItemClick = { tvShow, imagePoster, tvTitle ->
+            ViewCompat.setTransitionName(
+                imagePoster!!,
+                getString(R.string.imageTransition).plus(tvShow.id)
+            )
+            ViewCompat.setTransitionName(
+                tvTitle!!,
+                getString(R.string.TitleTransition).plus(tvShow.id)
+            )
             val args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
                 putString(ARG_OVERVIEW, tvShow.overview)
             }
-            findNavController().navigate(R.id.action_searchFragment_to_detailContentFragment, args)
+            val extras = FragmentNavigatorExtras(
+                imagePoster to getString(R.string.imageTransition).plus(tvShow.id),
+                tvTitle to getString(R.string.TitleTransition).plus(tvShow.id)
+            )
+            findNavController().navigate(
+                R.id.action_searchFragment_to_detailContentFragment,
+                args,
+                null,
+                extras
+            )
         }
     }
 
@@ -121,7 +140,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         }
     }
 
-    private fun setupRv() = binding.rvSearch.apply { 
+    private fun setupRv() = binding.rvSearch.apply {
         adapter = tvSearchAdapter
         layoutManager = LinearLayoutManager(activity)
     }

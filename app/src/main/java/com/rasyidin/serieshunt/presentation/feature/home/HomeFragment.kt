@@ -2,15 +2,22 @@ package com.rasyidin.serieshunt.presentation.feature.home
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.ChangeBounds
+import androidx.transition.Transition
+import androidx.transition.TransitionInflater
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.domain.model.TvShow
 import com.rasyidin.serieshunt.databinding.FragmentHomeBinding
 import com.rasyidin.serieshunt.presentation.adapter.OnTheAirAdapter
 import com.rasyidin.serieshunt.presentation.adapter.PopularAdapter
@@ -19,6 +26,7 @@ import com.rasyidin.serieshunt.presentation.adapter.TvShowAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_OVERVIEW
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_TV_ID
+import com.rasyidin.serieshunt.presentation.utils.Constants.ANIMATION_DURATION
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,6 +47,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     @Inject
     lateinit var topRatedAdapter: TopRatedAdapter
 
+    @Inject
+    lateinit var bounds: ChangeBounds
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val animation =
+            TransitionInflater.from(activity).inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = animation.setDuration(ANIMATION_DURATION)
+        sharedElementReturnTransition = exitTransition()
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,6 +75,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         navigateToDetail()
 
         navigateToSearchTv()
+    }
+
+    private fun exitTransition(): Transition {
+        bounds.apply {
+            interpolator = DecelerateInterpolator()
+            duration = ANIMATION_DURATION
+        }
+        return bounds
     }
 
     private fun navigateToSearchTv() {
@@ -164,38 +192,93 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private fun setupTransitionName(imagePoster: View?, tvTitle: View?, tvShow: TvShow) {
+        if (tvTitle == null) {
+            ViewCompat.setTransitionName(
+                imagePoster!!,
+                getString(R.string.imageTransition).plus(tvShow.id)
+            )
+        } else {
+            ViewCompat.setTransitionName(
+                imagePoster!!,
+                getString(R.string.imageTransition).plus(tvShow.id)
+            )
+            ViewCompat.setTransitionName(
+                tvTitle,
+                getString(R.string.TitleTransition).plus(tvShow.id)
+            )
+        }
+    }
+
     private fun navigateToDetail() {
         var args: Bundle
-        popularAdapter.onItemClick = { tvShow ->
+        popularAdapter.onItemClick = { tvShow, imgPoster, _ ->
+            setupTransitionName(imgPoster, null, tvShow)
+            val extras = FragmentNavigatorExtras(
+                imgPoster!! to getString(R.string.imageTransition).plus(tvShow.id)
+            )
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
                 putString(ARG_OVERVIEW, tvShow.overview)
             }
-            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailContentFragment,
+                args,
+                null,
+                extras
+            )
         }
 
-        topRatedAdapter.onItemClick = { tvShow ->
+        topRatedAdapter.onItemClick = { tvShow, imgPoster, _ ->
+            setupTransitionName(imgPoster, null, tvShow)
+            val extras = FragmentNavigatorExtras(
+                imgPoster!! to getString(R.string.imageTransition).plus(tvShow.id)
+            )
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
                 putString(ARG_OVERVIEW, tvShow.overview)
             }
-            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailContentFragment,
+                args,
+                null,
+                extras
+            )
         }
 
-        onTheAirAdapter.onItemClick = { tvShow ->
+        onTheAirAdapter.onItemClick = { tvShow, imgPoster, _ ->
+            setupTransitionName(imgPoster, null, tvShow)
+            val extras = FragmentNavigatorExtras(
+                imgPoster!! to getString(R.string.imageTransition).plus(tvShow.id)
+            )
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
                 putString(ARG_OVERVIEW, tvShow.overview)
             }
-            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailContentFragment,
+                args,
+                null,
+                extras
+            )
         }
 
-        airingTodayAdapter.onItemClick = { tvShow ->
+        airingTodayAdapter.onItemClick = { tvShow, imgPoster, tvTitle ->
+            setupTransitionName(imgPoster, tvTitle, tvShow)
+            val extras = FragmentNavigatorExtras(
+                imgPoster!! to getString(R.string.imageTransition).plus(tvShow.id),
+                tvTitle!! to getString(R.string.TitleTransition).plus(tvShow.id)
+            )
             args = Bundle().apply {
                 putInt(ARG_TV_ID, tvShow.id)
                 putString(ARG_OVERVIEW, tvShow.overview)
             }
-            findNavController().navigate(R.id.action_homeFragment_to_detailContentFragment, args)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailContentFragment,
+                args,
+                null,
+                extras
+            )
         }
     }
 

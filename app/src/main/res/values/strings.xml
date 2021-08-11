@@ -14,4 +14,6 @@
     <string name="empty_overview">Synopsis Unavailable</string>
     <string name="video_unavailable">Video Unavailable</string>
     <string name="not_found">Not Found</string>
+    <string name="imageTransition">ImageTransition</string>
+    <string name="TitleTransition">TitleTransition</string>
 </resources>
