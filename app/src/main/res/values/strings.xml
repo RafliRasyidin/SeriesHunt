@@ -16,4 +16,5 @@
     <string name="not_found">Not Found</string>
     <string name="imageTransition">ImageTransition</string>
     <string name="TitleTransition">TitleTransition</string>
+    <string name="searchViewTransition">searchViewTransition</string>
 </resources>

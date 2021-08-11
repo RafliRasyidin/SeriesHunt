@@ -2,6 +2,7 @@ package com.rasyidin.serieshunt.presentation.feature.search
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
@@ -10,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionInflater
 import com.rasyidin.serieshunt.R
 import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.databinding.FragmentSearchBinding
@@ -36,6 +38,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     @Inject
     lateinit var tvSearchAdapter: TvSearchAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val animation =
+            TransitionInflater.from(activity).inflateTransition(android.R.transition.move)
+
+        sharedElementEnterTransition = animation
+        sharedElementReturnTransition = animation.setInterpolator(DecelerateInterpolator())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

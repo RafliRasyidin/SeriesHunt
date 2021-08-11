@@ -87,7 +87,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun navigateToSearchTv() {
         binding.contentContainer.etSearch.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+            val extras =
+                FragmentNavigatorExtras(it to getString(R.string.searchViewTransition))
+            findNavController().navigate(
+                R.id.action_homeFragment_to_searchFragment,
+                null,
+                null,
+                extras
+            )
         }
     }
 
