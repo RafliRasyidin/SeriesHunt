@@ -19,10 +19,13 @@ fun String.toOnlyYearFormat(): String {
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 fun String.toDateMonthYearFormat(): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("dd MMMM y", Locale.getDefault())
-    val date = inputFormat.parse(this)
-    return outputFormat.format(date)
+    return if (this.isEmpty()) this else {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMMM y", Locale.getDefault())
+        val date = inputFormat.parse(this)
+        outputFormat.format(date)
+    }
+
 }
 
 fun View.show() {
