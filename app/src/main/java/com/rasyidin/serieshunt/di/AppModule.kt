@@ -1,6 +1,7 @@
 package com.rasyidin.serieshunt.di
 
 import android.content.Context
+import androidx.transition.ChangeBounds
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.rasyidin.serieshunt.R
@@ -23,5 +24,9 @@ object AppModule {
                 RequestOptions()
                     .error(R.drawable.ic_broken_image)
             )
+
+    @Provides
+    @Singleton
+    fun providesChangeBoundsInstance(): ChangeBounds = ChangeBounds()
 
 }
