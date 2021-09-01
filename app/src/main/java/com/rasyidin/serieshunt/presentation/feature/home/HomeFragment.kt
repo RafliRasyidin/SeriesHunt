@@ -1,23 +1,24 @@
 package com.rasyidin.serieshunt.presentation.feature.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.Transition
 import androidx.transition.TransitionInflater
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.rasyidin.serieshunt.R
-import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.domain.model.TvShow
+import com.rasyidin.serieshunt.core.utils.onFailure
+import com.rasyidin.serieshunt.core.utils.onSuccess
 import com.rasyidin.serieshunt.databinding.FragmentHomeBinding
 import com.rasyidin.serieshunt.presentation.adapter.OnTheAirAdapter
 import com.rasyidin.serieshunt.presentation.adapter.PopularAdapter
@@ -27,6 +28,8 @@ import com.rasyidin.serieshunt.presentation.base.BaseFragment
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_OVERVIEW
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_TV_ID
 import com.rasyidin.serieshunt.presentation.utils.Constants.ANIMATION_DURATION
+import com.rasyidin.serieshunt.presentation.utils.isLoading
+import com.rasyidin.serieshunt.presentation.utils.isSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -99,102 +102,79 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun subscribeToObserver() {
-        homeViewModel.getAiringToday.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    resource.data?.let { listTvShow ->
-                        if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvSquare()
-                            airingTodayAdapter.submitList(listTvShow)
-                        }
-                    }
+        homeViewModel.getAiringToday()
+        homeViewModel.getAiringToday.observe(viewLifecycleOwner) { result ->
+
+            binding.shimmerRvAiringToday.isVisible = isLoading(result)
+
+            binding.rvAiringToday.isVisible = isSuccess(result)
+            result.onSuccess { resultData ->
+                val isDataEmpty = resultData.data.isEmpty()
+                if (!isDataEmpty) {
+                    airingTodayAdapter.submitList(resultData.data)
                 }
-                is Resource.Error -> {
-                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                    hideShimmerRvSquare()
-                }
-                is Resource.Loading -> showShimmerRvSquare()
+            }
+
+            result.onFailure { throwable ->
+                Log.e(HomeFragment::class.simpleName, throwable.message.toString())
+                Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
             }
         }
 
-        homeViewModel.getPopular.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    resource.data?.let { listTvShow ->
-                        if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvPortrait(
-                                binding.contentContainer.rvPopular,
-                                binding.contentContainer.shimmerRvPopular
-                            )
-                            popularAdapter.submitList(listTvShow)
-                        }
-                    }
+        homeViewModel.getPopular()
+        homeViewModel.getPopular.observe(viewLifecycleOwner) { result ->
+
+            binding.contentContainer.shimmerRvPopular.isVisible = isLoading(result)
+
+            binding.contentContainer.rvPopular.isVisible = isSuccess(result)
+            result.onSuccess { resultData ->
+                val isDataEmpty = resultData.data.isNullOrEmpty()
+                if (!isDataEmpty) {
+                    popularAdapter.submitList(resultData.data)
                 }
-                is Resource.Error -> {
-                    hideShimmerRvPortrait(
-                        binding.contentContainer.rvPopular,
-                        binding.contentContainer.shimmerRvPopular
-                    )
-                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Loading -> showShimmerRvPortrait(
-                    binding.contentContainer.rvPopular,
-                    binding.contentContainer.shimmerRvPopular
-                )
+            }
+
+            result.onFailure { throwable ->
+                Log.e(HomeFragment::class.simpleName, throwable.message.toString())
+                Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
             }
         }
 
-        homeViewModel.getOnTheAir.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    resource.data?.let { listTvShow ->
-                        if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvPortrait(
-                                binding.contentContainer.rvOnTheAir,
-                                binding.contentContainer.shimmerRvOnTheAir
-                            )
-                            onTheAirAdapter.submitList(listTvShow)
-                        }
-                    }
+        homeViewModel.getOnTheAir()
+        homeViewModel.getOnTheAir.observe(viewLifecycleOwner) { result ->
+
+            binding.contentContainer.shimmerRvOnTheAir.isVisible = isLoading(result)
+
+            binding.contentContainer.rvOnTheAir.isVisible = isSuccess(result)
+            result.onSuccess { resultData ->
+                val isDataEmpty = resultData.data.isNullOrEmpty()
+                if (!isDataEmpty) {
+                    onTheAirAdapter.submitList(resultData.data)
                 }
-                is Resource.Error -> {
-                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                    hideShimmerRvPortrait(
-                        binding.contentContainer.rvOnTheAir,
-                        binding.contentContainer.shimmerRvOnTheAir
-                    )
-                }
-                is Resource.Loading -> showShimmerRvPortrait(
-                    binding.contentContainer.rvOnTheAir,
-                    binding.contentContainer.shimmerRvOnTheAir
-                )
+            }
+
+            result.onFailure { throwable ->
+                Log.e(HomeFragment::class.simpleName, throwable.message.toString())
+                Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
             }
         }
 
-        homeViewModel.getTopRated.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    resource.data?.let { listTvShow ->
-                        if (listTvShow.isNotEmpty()) {
-                            hideShimmerRvPortrait(
-                                binding.contentContainer.rvTopRated,
-                                binding.contentContainer.shimmerRvTopRated
-                            )
-                            topRatedAdapter.submitList(listTvShow)
-                        }
-                    }
+        homeViewModel.getTopRated()
+        homeViewModel.getTopRated.observe(viewLifecycleOwner) { result ->
+
+            binding.contentContainer.shimmerRvTopRated.isVisible = isLoading(result)
+
+            binding.contentContainer.rvTopRated.isVisible = isSuccess(result)
+            result.onSuccess { resultData ->
+                val isDataEmpty = resultData.data.isNullOrEmpty()
+                if (!isDataEmpty) {
+                    topRatedAdapter.submitList(resultData.data)
                 }
-                is Resource.Error -> {
-                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
-                    hideShimmerRvPortrait(
-                        binding.contentContainer.rvTopRated,
-                        binding.contentContainer.shimmerRvTopRated
-                    )
-                }
-                is Resource.Loading -> showShimmerRvPortrait(
-                    binding.contentContainer.rvTopRated,
-                    binding.contentContainer.shimmerRvTopRated
-                )
+            }
+
+            result.onFailure { throwable ->
+                Log.e(HomeFragment::class.simpleName, throwable.message.toString())
+                Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -287,30 +267,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 extras
             )
         }
-    }
-
-    private fun showShimmerRvSquare() {
-        binding.apply {
-            rvAiringToday.visibility = View.INVISIBLE
-            shimmerRvAiringToday.visibility = View.VISIBLE
-        }
-    }
-
-    private fun hideShimmerRvSquare() {
-        binding.apply {
-            rvAiringToday.visibility = View.VISIBLE
-            shimmerRvAiringToday.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun showShimmerRvPortrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
-        recyclerView.visibility = View.INVISIBLE
-        shimmer.visibility = View.VISIBLE
-    }
-
-    private fun hideShimmerRvPortrait(recyclerView: RecyclerView, shimmer: ShimmerFrameLayout) {
-        recyclerView.visibility = View.VISIBLE
-        shimmer.visibility = View.INVISIBLE
     }
 
     private fun setupRvAiringToday() = binding.rvAiringToday.apply {
