@@ -7,31 +7,28 @@ import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CrewResp
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.EpisodeResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.TvSeasonResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.video.VideoItemResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(private val apiService: ApiService) :
-    HandleTvShowResponse() {
+    IRemoteDataSource, HandleTvShowResponse() {
 
-    suspend fun getAiringToday(): Flow<ApiResponse<List<TvItemResponse>>> {
-        response = apiService.getAiringToday()
-        return handleResponse(response)
+    override suspend fun getAiringToday(): TvResponse {
+        return apiService.getAiringToday()
     }
 
-    suspend fun getOnTheAir(): Flow<ApiResponse<List<TvItemResponse>>> {
-        response = apiService.getOnTheAir()
-        return handleResponse(response)
+    override suspend fun getOnTheAir(): TvResponse {
+        return apiService.getOnTheAir()
     }
 
-    suspend fun getPopular(): Flow<ApiResponse<List<TvItemResponse>>> {
-        response = apiService.getPopular()
-        return handleResponse(response)
+    override suspend fun getPopular(): TvResponse {
+        return apiService.getPopular()
     }
 
-    suspend fun getTopRated(): Flow<ApiResponse<List<TvItemResponse>>> {
-        response = apiService.getTopRated()
-        return handleResponse(response)
+    override suspend fun getTopRated(): TvResponse {
+        return apiService.getTopRated()
     }
 
     suspend fun getDetail(tvId: Int): Flow<ApiResponse<TvItemResponse>> {

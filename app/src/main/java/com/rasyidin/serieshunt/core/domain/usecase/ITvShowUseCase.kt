@@ -1,18 +1,25 @@
 package com.rasyidin.serieshunt.core.domain.usecase
 
 import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface ITvShowUseCase {
 
-    fun getAiringToday(): Flow<Resource<List<TvShow>>>
+    val listAiringToday: StateFlow<ResultState<TvResult>>
+    val listOnTheAir: StateFlow<ResultState<TvResult>>
+    val listPopular: StateFlow<ResultState<TvResult>>
+    val listTopRated: StateFlow<ResultState<TvResult>>
 
-    fun getOnTheAir(): Flow<Resource<List<TvShow>>>
+    suspend fun getAiringToday()
 
-    fun getPopular(): Flow<Resource<List<TvShow>>>
+    suspend fun getOnTheAir()
 
-    fun getTopRated(): Flow<Resource<List<TvShow>>>
+    suspend fun getPopular()
+
+    suspend fun getTopRated()
 
     fun getDetail(idTv: Int): Flow<Resource<TvShow>>
 

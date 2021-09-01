@@ -1,19 +1,26 @@
-package com.rasyidin.serieshunt.core.domain.repository
+package com.rasyidin.serieshunt.core.data.repository
 
 import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.SeasonResponse
+import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface ITvShowRepository {
 
-    fun getAiringToday(): Flow<Resource<List<TvShow>>>
+    val listAiringToday: StateFlow<ResultState<TvResult>>
+    val listOnTheAir: StateFlow<ResultState<TvResult>>
+    val listPopular: StateFlow<ResultState<TvResult>>
+    val listTopRated: StateFlow<ResultState<TvResult>>
 
-    fun getOnTheAir(): Flow<Resource<List<TvShow>>>
+    suspend fun getAiringToday()
 
-    fun getPopular(): Flow<Resource<List<TvShow>>>
+    suspend fun getOnTheAir()
 
-    fun getTopRated(): Flow<Resource<List<TvShow>>>
+    suspend fun getPopular()
+
+    suspend fun getTopRated()
 
     fun getDetail(tvId: Int): Flow<Resource<TvShow>>
 

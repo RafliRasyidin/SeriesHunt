@@ -1,71 +1,79 @@
-package com.rasyidin.serieshunt.core.data
+package com.rasyidin.serieshunt.core.data.repository
 
 import android.util.Log
+import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.data.source.remote.RemoteDataSource
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiResponse
+import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
-import com.rasyidin.serieshunt.core.domain.repository.ITvShowRepository
 import com.rasyidin.serieshunt.core.utils.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
 class TvShowRepository @Inject constructor(private val remoteDataSource: RemoteDataSource) :
     ITvShowRepository {
 
-    override fun getAiringToday(): Flow<Resource<List<TvShow>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getAiringToday().collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toListTvShow()))
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    is ApiResponse.Empty -> emit(Resource.Success<List<TvShow>>(emptyList()))
-                }
+    private val _listAiringToday: MutableStateFlow<ResultState<TvResult>> = idle()
+    private val _listOnTheAir: MutableStateFlow<ResultState<TvResult>> = idle()
+    private val _listPopular: MutableStateFlow<ResultState<TvResult>> = idle()
+    private val _listTopRated: MutableStateFlow<ResultState<TvResult>> = idle()
+
+    override val listAiringToday: StateFlow<ResultState<TvResult>>
+        get() = _listAiringToday
+    override val listOnTheAir: StateFlow<ResultState<TvResult>>
+        get() = _listOnTheAir
+    override val listPopular: StateFlow<ResultState<TvResult>>
+        get() = _listPopular
+    override val listTopRated: StateFlow<ResultState<TvResult>>
+        get() = _listTopRated
+
+    override suspend fun getAiringToday() {
+        fetch {
+            remoteDataSource.getAiringToday()
+        }.map { result ->
+            mapResult(result) {
+                this.toTvResult()
             }
-        } as Flow<Resource<List<TvShow>>>
+        }.collect { result ->
+            _listAiringToday.value = result
+        }
     }
 
-    override fun getOnTheAir(): Flow<Resource<List<TvShow>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getOnTheAir().collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toListTvShow()))
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    is ApiResponse.Empty -> emit(Resource.Success<List<TvShow>>(emptyList()))
-                }
+    override suspend fun getOnTheAir() {
+        fetch {
+            remoteDataSource.getOnTheAir()
+        }.map { result ->
+            mapResult(result) {
+                this.toTvResult()
             }
-        } as Flow<Resource<List<TvShow>>>
+        }.collect { result ->
+            _listOnTheAir.value = result
+        }
     }
 
-    override fun getPopular(): Flow<Resource<List<TvShow>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getPopular().collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toListTvShow()))
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    is ApiResponse.Empty -> emit(Resource.Success<List<TvShow>>(emptyList()))
-                }
+    override suspend fun getPopular() {
+        fetch {
+            remoteDataSource.getPopular()
+        }.map { result ->
+            mapResult(result) {
+                this.toTvResult()
             }
-        } as Flow<Resource<List<TvShow>>>
+        }.collect { result ->
+            _listPopular.value = result
+        }
     }
 
-    override fun getTopRated(): Flow<Resource<List<TvShow>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getTopRated().collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toListTvShow()))
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    is ApiResponse.Empty -> emit(Resource.Success<List<TvShow>>(emptyList()))
-                }
+    override suspend fun getTopRated() {
+        fetch {
+            remoteDataSource.getTopRated()
+        }.map { result ->
+            mapResult(result) {
+                this.toTvResult()
             }
-        } as Flow<Resource<List<TvShow>>>
+        }.collect { result ->
+            _listTopRated.value = result
+        }
     }
 
     override fun getDetail(tvId: Int): Flow<Resource<TvShow>> {

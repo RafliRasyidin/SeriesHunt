@@ -1,26 +1,39 @@
 package com.rasyidin.serieshunt.core.domain.usecase
 
 import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.data.repository.ITvShowRepository
+import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
-import com.rasyidin.serieshunt.core.domain.repository.ITvShowRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-class TvShowInteractors @Inject constructor(private val tvShowRepository: ITvShowRepository) : ITvShowUseCase{
-    override fun getAiringToday(): Flow<Resource<List<TvShow>>> {
-        return tvShowRepository.getAiringToday()
+class TvShowInteractors @Inject constructor(private val tvShowRepository: ITvShowRepository) :
+    ITvShowUseCase {
+
+    override val listAiringToday: StateFlow<ResultState<TvResult>>
+        get() = tvShowRepository.listAiringToday
+    override val listOnTheAir: StateFlow<ResultState<TvResult>>
+        get() = tvShowRepository.listOnTheAir
+    override val listPopular: StateFlow<ResultState<TvResult>>
+        get() = tvShowRepository.listPopular
+    override val listTopRated: StateFlow<ResultState<TvResult>>
+        get() = tvShowRepository.listTopRated
+
+    override suspend fun getAiringToday() {
+        tvShowRepository.getAiringToday()
     }
 
-    override fun getOnTheAir(): Flow<Resource<List<TvShow>>> {
-        return tvShowRepository.getOnTheAir()
+    override suspend fun getOnTheAir() {
+        tvShowRepository.getOnTheAir()
     }
 
-    override fun getPopular(): Flow<Resource<List<TvShow>>> {
-        return tvShowRepository.getPopular()
+    override suspend fun getPopular() {
+        tvShowRepository.getPopular()
     }
 
-    override fun getTopRated(): Flow<Resource<List<TvShow>>> {
-        return tvShowRepository.getTopRated()
+    override suspend fun getTopRated() {
+        tvShowRepository.getTopRated()
     }
 
     override fun getDetail(idTv: Int): Flow<Resource<TvShow>> {

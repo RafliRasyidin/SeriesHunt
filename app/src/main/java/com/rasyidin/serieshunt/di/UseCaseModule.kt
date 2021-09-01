@@ -1,6 +1,6 @@
 package com.rasyidin.serieshunt.di
 
-import com.rasyidin.serieshunt.core.domain.repository.ITvShowRepository
+import com.rasyidin.serieshunt.core.data.repository.ITvShowRepository
 import com.rasyidin.serieshunt.core.domain.usecase.ITvShowUseCase
 import com.rasyidin.serieshunt.core.domain.usecase.TvShowInteractors
 import dagger.Module

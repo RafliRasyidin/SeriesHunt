@@ -1,9 +1,9 @@
 package com.rasyidin.serieshunt.core.di
 
-import com.rasyidin.serieshunt.core.data.TvShowRepository
+import com.rasyidin.serieshunt.core.data.repository.TvShowRepository
 import com.rasyidin.serieshunt.core.data.source.remote.RemoteDataSource
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiService
-import com.rasyidin.serieshunt.core.domain.repository.ITvShowRepository
+import com.rasyidin.serieshunt.core.data.repository.ITvShowRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

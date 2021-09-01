@@ -4,8 +4,30 @@ import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CastResp
 import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CrewResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.EpisodeResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.video.VideoItemResponse
+import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
+
+inline fun <T: Any, U: Any> mapResult(
+    resultState: ResultState<out T>,
+    mapper: T.() -> U
+): ResultState<U> {
+    return when (resultState) {
+        is ResultState.Success -> {
+            val data = resultState.data
+            val mapData = mapper.invoke(data)
+            ResultState.Success(mapData)
+        }
+        is ResultState.Error -> ResultState.Error(resultState.throwable)
+        is ResultState.Idle -> ResultState.Idle()
+        is ResultState.Loading -> ResultState.Loading()
+    }
+}
+
+fun TvResponse.toTvResult() = TvResult(
+    this.page, this.results.toListTvShow()
+)
 
 fun List<TvItemResponse>.toListTvShow(): List<TvShow> {
     val data = ArrayList<TvShow>()
