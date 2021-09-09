@@ -1,11 +1,13 @@
 package com.rasyidin.serieshunt.presentation.feature.detail.overview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.utils.onFailure
+import com.rasyidin.serieshunt.core.utils.onSuccess
 import com.rasyidin.serieshunt.databinding.FragmentCreditsBinding
 import com.rasyidin.serieshunt.presentation.adapter.credits.CastAdapter
 import com.rasyidin.serieshunt.presentation.adapter.credits.CrewAdapter
@@ -37,21 +39,37 @@ class CreditsFragment : BaseFragment<FragmentCreditsBinding>(FragmentCreditsBind
     }
 
     private fun observeCast(tvId: Int) {
-        viewModel.getCast(tvId).observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Error -> Toast.makeText(activity, "Something Wrong", Toast.LENGTH_SHORT)
-                    .show()
-                is Resource.Loading -> Unit
-                is Resource.Success -> {
-                    val listCast = resource.data
-                    listCast?.let {
-                        if (it.isNotEmpty()) {
-                            castAdapter.submitList(it)
-                        }
-                    }
+        viewModel.getCast(tvId)
+        viewModel.listCast.observe(viewLifecycleOwner) { resultState ->
 
+            resultState.onSuccess { listCast ->
+                if (listCast.isNotEmpty()) {
+                    castAdapter.submitList(listCast)
                 }
             }
+
+            resultState.onFailure { throwable ->
+                Toast.makeText(requireActivity(), "Something Wrong!", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, throwable.message.toString())
+            }
+        }
+    }
+
+    private fun observeCrew(tvId: Int) {
+        viewModel.getCrew(tvId)
+        viewModel.listCrew.observe(viewLifecycleOwner) { resultState ->
+
+            resultState.onSuccess { listCrew ->
+                if (listCrew.isNotEmpty()) {
+                    crewAdapter.submitList(listCrew)
+                }
+            }
+
+            resultState.onFailure { throwable ->
+                Toast.makeText(requireActivity(), "Something Wrong!", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, throwable.message.toString())
+            }
+
         }
     }
 
@@ -82,29 +100,11 @@ class CreditsFragment : BaseFragment<FragmentCreditsBinding>(FragmentCreditsBind
         }
     }
 
-    private fun observeCrew(tvId: Int) {
-        viewModel.getCrew(tvId).observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Error -> Toast.makeText(activity, "Something Wrong", Toast.LENGTH_SHORT)
-                    .show()
-                is Resource.Loading -> Unit
-                is Resource.Success -> {
-                    val listCast = resource.data
-                    listCast?.let {
-                        if (it.isNotEmpty()) {
-                            crewAdapter.submitList(it)
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-
     companion object {
 
         private const val ARG_TV_ID = "tvId"
         private const val ARG_SECTION_INDEX = "sectionIndex"
+        private val TAG = CreditsFragment::class.simpleName
 
         @JvmStatic
         fun newInstance(tvId: Int, index: Int) =

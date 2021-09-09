@@ -3,10 +3,12 @@ package com.rasyidin.serieshunt.presentation.feature.detail
 import android.content.Intent
 import android.content.Intent.*
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,14 +19,16 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rasyidin.serieshunt.R
-import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.domain.model.TvShow
 import com.rasyidin.serieshunt.core.utils.Constants.BASE_URL_IMAGE
+import com.rasyidin.serieshunt.core.utils.onFailure
+import com.rasyidin.serieshunt.core.utils.onSuccess
 import com.rasyidin.serieshunt.databinding.FragmentDetailContentBinding
 import com.rasyidin.serieshunt.presentation.adapter.DetailPagerAdapter
 import com.rasyidin.serieshunt.presentation.adapter.DetailPagerAdapter.Companion.TAB_TITLES
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
 import com.rasyidin.serieshunt.presentation.utils.Constants.ANIMATION_DURATION
+import com.rasyidin.serieshunt.presentation.utils.isLoading
 import com.rasyidin.serieshunt.presentation.utils.toOnlyYearFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -108,59 +112,57 @@ class DetailContentFragment :
     }
 
     private fun observeData() {
-        viewModel.getDetail(args.tvId).observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    binding.pbDetail.visibility = View.GONE
-                    tvShow = resource.data
-                    tvShow?.let {
-                        initViewPager(it.id, it.overview, it.numberOfSeasons)
-                        initTabLayout()
+        viewModel.getDetail(args.tvId)
+        viewModel.tvShow.observe(viewLifecycleOwner) { resultState ->
+            binding.pbDetail.isVisible = isLoading(resultState)
 
-                        binding.apply {
-                            val isBackdropNull = it.backdropPath.isNullOrEmpty()
-                            if (isBackdropNull) {
-                                glide.load(R.drawable.ic_tv_placeholder)
-                                    .into(toolbarContainer.imgBackdrop)
-                            } else {
-                                glide.load(BASE_URL_IMAGE + it.backdropPath)
-                                    .placeholder(R.drawable.ic_tv_placeholder)
-                                    .into(toolbarContainer.imgBackdrop)
-                            }
+            resultState.onSuccess { tvShow ->
+                tvShow.run {
+                    initViewPager(id, overview, numberOfSeasons)
+                    initTabLayout()
 
-                            val isPosterNull = it.posterPath.isNullOrEmpty()
-                            if (isPosterNull) {
-                                glide.load(R.drawable.ic_tv_placeholder)
-                                    .into(contentContainer.imgPoster)
-                            } else {
-                                glide.load(BASE_URL_IMAGE + it.posterPath)
-                                    .placeholder(R.drawable.ic_tv_placeholder)
-                                    .into(contentContainer.imgPoster)
-                            }
+                    binding.run {
+                        val isBackdropNull = backdropPath.isNullOrEmpty()
+                        if (isBackdropNull) {
+                            glide.load(R.drawable.ic_tv_placeholder)
+                                .into(toolbarContainer.imgBackdrop)
+                        } else {
+                            glide.load(BASE_URL_IMAGE + backdropPath)
+                                .placeholder(R.drawable.ic_tv_placeholder)
+                                .into(toolbarContainer.imgBackdrop)
+                        }
 
-                            toolbarContainer.tvTitle.text = it.name
-                            contentContainer.apply {
-                                tvDate.text = it.firstAirDate?.toOnlyYearFormat()
-                                tvRating.text = it.voteAverage.toString()
-                                tvStatus.text = it.status
-                                for (index in it.genres.indices) {
-                                    val chip = Chip(chipGroup.context)
-                                    chip.text = it.genres[index].name
-                                    chip.isCheckable = false
-                                    chip.isCheckable = false
-                                    chipGroup.addView(chip)
-                                }
+                        val isPosterNull = posterPath.isNullOrEmpty()
+                        if (isPosterNull) {
+                            glide.load(R.drawable.ic_tv_placeholder)
+                                .into(contentContainer.imgPoster)
+                        } else {
+                            glide.load(BASE_URL_IMAGE + posterPath)
+                                .placeholder(R.drawable.ic_tv_placeholder)
+                                .into(contentContainer.imgPoster)
+                        }
+
+                        toolbarContainer.tvTitle.text = name
+                        contentContainer.apply {
+                            tvDate.text = firstAirDate?.toOnlyYearFormat()
+                            tvRating.text = voteAverage.toString()
+                            tvStatus.text = status
+                            for (index in genres.indices) {
+                                val chip = Chip(chipGroup.context)
+                                chip.text = genres[index].name
+                                chip.isCheckable = false
+                                chip.isCheckable = false
+                                chipGroup.addView(chip)
                             }
                         }
                     }
                 }
-                is Resource.Error -> {
-                    binding.pbDetail.visibility = View.GONE
-                    Toast.makeText(activity, "Something Wrong!", Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Loading -> binding.pbDetail.visibility = View.VISIBLE
             }
 
+            resultState.onFailure { throwable ->
+                Toast.makeText(requireActivity(), "Something Wrong!", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, throwable.message.toString())
+            }
         }
 
     }
@@ -197,6 +199,8 @@ class DetailContentFragment :
         const val ARG_TV_ID = "tvId"
 
         const val ARG_OVERVIEW = "overview"
+
+        val TAG = DetailContentFragment::class.simpleName
 
         fun newInstance(tvId: Int, overview: String?) =
             DetailContentFragment().apply {

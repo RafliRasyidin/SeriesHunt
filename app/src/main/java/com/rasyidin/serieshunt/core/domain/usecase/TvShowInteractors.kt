@@ -1,10 +1,8 @@
 package com.rasyidin.serieshunt.core.domain.usecase
 
-import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.data.repository.ITvShowRepository
 import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
@@ -13,12 +11,33 @@ class TvShowInteractors @Inject constructor(private val tvShowRepository: ITvSho
 
     override val listAiringToday: StateFlow<ResultState<TvResult>>
         get() = tvShowRepository.listAiringToday
+
     override val listOnTheAir: StateFlow<ResultState<TvResult>>
         get() = tvShowRepository.listOnTheAir
+
     override val listPopular: StateFlow<ResultState<TvResult>>
         get() = tvShowRepository.listPopular
+
     override val listTopRated: StateFlow<ResultState<TvResult>>
         get() = tvShowRepository.listTopRated
+
+    override val tvShow: StateFlow<ResultState<TvShow>>
+        get() = tvShowRepository.tvShow
+
+    override val listCast: StateFlow<ResultState<List<Cast>>>
+        get() = tvShowRepository.listCast
+
+    override val listCrew: StateFlow<ResultState<List<Crew>>>
+        get() = tvShowRepository.listCrew
+
+    override val videos: StateFlow<ResultState<List<VideoTrailer>>>
+        get() = tvShowRepository.videos
+
+    override val tvEpisodes: StateFlow<ResultState<List<TvEpisode>>>
+        get() = tvShowRepository.tvEpisodes
+
+    override val searchResults: StateFlow<ResultState<TvResult>>
+        get() = tvShowRepository.searchResults
 
     override suspend fun getAiringToday() {
         tvShowRepository.getAiringToday()
@@ -36,27 +55,27 @@ class TvShowInteractors @Inject constructor(private val tvShowRepository: ITvSho
         tvShowRepository.getTopRated()
     }
 
-    override fun getDetail(idTv: Int): Flow<Resource<TvShow>> {
+    override suspend fun getDetail(idTv: Int) {
         return tvShowRepository.getDetail(idTv)
     }
 
-    override fun searchTvShow(querySearch: String): Flow<Resource<List<TvShow>>> {
+    override suspend fun searchTvShow(querySearch: String) {
         return tvShowRepository.searchTvShow(querySearch)
     }
 
-    override fun getCast(tvId: Int): Flow<Resource<List<Cast>>> {
+    override suspend fun getCast(tvId: Int) {
         return tvShowRepository.getCast(tvId)
     }
 
-    override fun getCrew(tvId: Int): Flow<Resource<List<Crew>>> {
+    override suspend fun getCrew(tvId: Int) {
         return tvShowRepository.getCrew(tvId)
     }
 
-    override fun getVideos(tvId: Int): Flow<Resource<List<VideoTrailer>>> {
+    override suspend fun getVideos(tvId: Int) {
         return tvShowRepository.getVideos(tvId)
     }
 
-    override fun getTvSeasons(tvId: Int, seasonNumber: Int): Flow<Resource<List<TvEpisode>>> {
+    override suspend fun getTvSeasons(tvId: Int, seasonNumber: Int) {
         return tvShowRepository.getTvSeasons(tvId, seasonNumber)
     }
 }

@@ -12,6 +12,12 @@ interface ITvShowUseCase {
     val listOnTheAir: StateFlow<ResultState<TvResult>>
     val listPopular: StateFlow<ResultState<TvResult>>
     val listTopRated: StateFlow<ResultState<TvResult>>
+    val tvShow: StateFlow<ResultState<TvShow>>
+    val listCast: StateFlow<ResultState<List<Cast>>>
+    val listCrew: StateFlow<ResultState<List<Crew>>>
+    val videos: StateFlow<ResultState<List<VideoTrailer>>>
+    val tvEpisodes: StateFlow<ResultState<List<TvEpisode>>>
+    val searchResults: StateFlow<ResultState<TvResult>>
 
     suspend fun getAiringToday()
 
@@ -21,15 +27,15 @@ interface ITvShowUseCase {
 
     suspend fun getTopRated()
 
-    fun getDetail(idTv: Int): Flow<Resource<TvShow>>
+    suspend fun getDetail(idTv: Int)
 
-    fun searchTvShow(querySearch: String): Flow<Resource<List<TvShow>>>
+    suspend fun searchTvShow(querySearch: String)
 
-    fun getCast(tvId: Int): Flow<Resource<List<Cast>>>
+    suspend fun getCast(tvId: Int)
 
-    fun getCrew(tvId: Int): Flow<Resource<List<Crew>>>
+    suspend fun getCrew(tvId: Int)
 
-    fun getVideos(tvId: Int): Flow<Resource<List<VideoTrailer>>>
+    suspend fun getVideos(tvId: Int)
 
-    fun getTvSeasons(tvId: Int, seasonNumber: Int): Flow<Resource<List<TvEpisode>>>
+    suspend fun getTvSeasons(tvId: Int, seasonNumber: Int)
 }

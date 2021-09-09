@@ -1,31 +1,35 @@
 package com.rasyidin.serieshunt.presentation.feature.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.rasyidin.serieshunt.R
-import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.utils.onFailure
+import com.rasyidin.serieshunt.core.utils.onLoading
+import com.rasyidin.serieshunt.core.utils.onSuccess
 import com.rasyidin.serieshunt.databinding.FragmentSearchBinding
 import com.rasyidin.serieshunt.presentation.adapter.TvSearchAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_OVERVIEW
 import com.rasyidin.serieshunt.presentation.feature.detail.DetailContentFragment.Companion.ARG_TV_ID
 import com.rasyidin.serieshunt.presentation.utils.hide
+import com.rasyidin.serieshunt.presentation.utils.isLoading
+import com.rasyidin.serieshunt.presentation.utils.isSuccess
 import com.rasyidin.serieshunt.presentation.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -95,17 +99,43 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                lifecycleScope.launch {
-                    viewModel.queryChannel.send(newText)
-                }
+                viewModel.searchTv(newText)
                 return true
             }
         })
     }
 
     private fun observeSearchTv() {
-        viewModel.searchTvShow.observe(viewLifecycleOwner) { tvShow ->
-            tvShow.observe(viewLifecycleOwner) { resource ->
+        viewModel.searchResults.observe(viewLifecycleOwner) { resultState ->
+            binding.run {
+                rvSearch.isVisible = isSuccess(resultState)
+                shimmerRvSearch.isVisible = isLoading(resultState)
+
+                resultState.onSuccess { tvResult ->
+                    val searchResults = tvResult.data
+                    if (searchResults.isNotEmpty()) {
+                        tvSearchAdapter.submitList(searchResults)
+                        rvSearch.show()
+                        lottieEmptyTv.hide()
+                        tvEmpty.hide()
+                    } else {
+                        rvSearch.hide()
+                        lottieEmptyTv.show()
+                        tvEmpty.show()
+                    }
+                }
+
+                resultState.onFailure { throwable ->
+                    Toast.makeText(requireActivity(), "Something Wrong!", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, throwable.message.toString())
+                }
+
+                resultState.onLoading {
+                    lottieEmptyTv.hide()
+                    tvEmpty.hide()
+                }
+            }
+            /*resultState.observe(viewLifecycleOwner) { resource ->
                 when (resource) {
                     is Resource.Error -> {
                         binding.apply {
@@ -146,7 +176,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
                     }
                 }
-            }
+            }*/
 
         }
     }
@@ -154,6 +184,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private fun setupRv() = binding.rvSearch.apply {
         adapter = tvSearchAdapter
         layoutManager = LinearLayoutManager(activity)
+    }
+
+    companion object {
+        private val TAG = SearchFragment::class.simpleName
     }
 
 }

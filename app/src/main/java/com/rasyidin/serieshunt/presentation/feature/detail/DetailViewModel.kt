@@ -5,20 +5,37 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.rasyidin.serieshunt.core.domain.usecase.ITvShowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(private val useCase: ITvShowUseCase) : ViewModel() {
 
-    fun getCast(tvId: Int) = useCase.getCast(tvId).asLiveData(viewModelScope.coroutineContext)
+    val listCast = useCase.listCast.asLiveData(viewModelScope.coroutineContext)
+    val listCrew = useCase.listCrew.asLiveData(viewModelScope.coroutineContext)
+    val tvShow = useCase.tvShow.asLiveData(viewModelScope.coroutineContext)
+    val videos = useCase.videos.asLiveData(viewModelScope.coroutineContext)
+    val tvEpisodes = useCase.tvEpisodes.asLiveData(viewModelScope.coroutineContext)
 
-    fun getCrew(tvId: Int) = useCase.getCrew(tvId).asLiveData(viewModelScope.coroutineContext)
+    fun getCast(tvId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        useCase.getCast(tvId)
+    }
 
-    fun getDetail(tvId: Int) = useCase.getDetail(tvId).asLiveData(viewModelScope.coroutineContext)
+    fun getCrew(tvId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        useCase.getCrew(tvId)
+    }
 
-    fun getVideos(tvId: Int) = useCase.getVideos(tvId).asLiveData(viewModelScope.coroutineContext)
+    fun getDetail(tvId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        useCase.getDetail(tvId)
+    }
 
-    fun getTvSeason(tvId: Int, seasonNumber: Int) =
-        useCase.getTvSeasons(tvId, seasonNumber).asLiveData(viewModelScope.coroutineContext)
+    fun getVideos(tvId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        useCase.getVideos(tvId)
+    }
+
+    fun getTvSeason(tvId: Int, seasonNumber: Int) = viewModelScope.launch(Dispatchers.IO) {
+        useCase.getTvSeasons(tvId, seasonNumber)
+    }
 
 }

@@ -1,19 +1,14 @@
 package com.rasyidin.serieshunt.core.data.source.remote
 
-import com.rasyidin.serieshunt.core.data.source.remote.network.ApiResponse
 import com.rasyidin.serieshunt.core.data.source.remote.network.ApiService
-import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CastResponse
-import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CrewResponse
-import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.EpisodeResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CreditsResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.TvSeasonResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvResponse
-import com.rasyidin.serieshunt.core.data.source.remote.response.video.VideoItemResponse
-import kotlinx.coroutines.flow.Flow
+import com.rasyidin.serieshunt.core.data.source.remote.response.video.VideoResponse
 import javax.inject.Inject
 
-class RemoteDataSource @Inject constructor(private val apiService: ApiService) :
-    IRemoteDataSource, HandleTvShowResponse() {
+class RemoteDataSource @Inject constructor(private val apiService: ApiService) : IRemoteDataSource{
 
     override suspend fun getAiringToday(): TvResponse {
         return apiService.getAiringToday()
@@ -31,35 +26,24 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) :
         return apiService.getTopRated()
     }
 
-    suspend fun getDetail(tvId: Int): Flow<ApiResponse<TvItemResponse>> {
-        val response = apiService.getDetailTvShow(tvId)
-        isIdEqualsToZero = response.id == 0
-        return handleDetailResponse(response)
+    override suspend fun getDetail(tvId: Int): TvItemResponse {
+        return apiService.getDetailTvShow(tvId)
     }
 
-    suspend fun searchTvShow(querySearch: String): Flow<ApiResponse<List<TvItemResponse>>> {
-        response = apiService.searchTvShow(querySearch)
-        return handleResponse(response)
+    override suspend fun getCredits(tvId: Int): CreditsResponse {
+        return apiService.getCredits(tvId)
     }
 
-    suspend fun getCast(tvId: Int): Flow<ApiResponse<List<CastResponse>>> {
-        creditsResponse = apiService.getCredits(tvId)
-        return handleCastResponse(creditsResponse)
+    override suspend fun getVideos(tvId: Int): VideoResponse {
+        return apiService.getVideos(tvId)
     }
 
-    suspend fun getCrew(tvId: Int): Flow<ApiResponse<List<CrewResponse>>> {
-        creditsResponse = apiService.getCredits(tvId)
-        return handleCrewResponse(creditsResponse)
+    override suspend fun searchTvShow(query: String): TvResponse {
+        return apiService.searchTvShow(query)
     }
 
-    suspend fun getVideo(tvId: Int): Flow<ApiResponse<List<VideoItemResponse>>> {
-        val response = apiService.getVideos(tvId)
-        return handleVideoResponse(response)
-    }
-
-    suspend fun getTvSeasons(tvId: Int, seasonNumber: Int): Flow<ApiResponse<List<EpisodeResponse>>> {
-        val response = apiService.getTvSeasons(tvId, seasonNumber)
-        return handleTvSeasonsResponse(response)
+    override suspend fun getTvSeasons(tvId: Int, seasonNumber: Int): TvSeasonResponse {
+        return apiService.getTvSeasons(tvId, seasonNumber)
     }
 
 }

@@ -1,6 +1,7 @@
 package com.rasyidin.serieshunt.core.utils
 
 import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CastResponse
+import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CreditsResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.credits.CrewResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvseason.EpisodeResponse
 import com.rasyidin.serieshunt.core.data.source.remote.response.tvshow.TvItemResponse

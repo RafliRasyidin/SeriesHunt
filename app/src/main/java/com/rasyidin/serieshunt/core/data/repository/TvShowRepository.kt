@@ -1,13 +1,13 @@
 package com.rasyidin.serieshunt.core.data.repository
 
-import android.util.Log
-import com.rasyidin.serieshunt.core.data.Resource
 import com.rasyidin.serieshunt.core.data.source.remote.RemoteDataSource
-import com.rasyidin.serieshunt.core.data.source.remote.network.ApiResponse
 import com.rasyidin.serieshunt.core.domain.ResultState
 import com.rasyidin.serieshunt.core.domain.model.*
 import com.rasyidin.serieshunt.core.utils.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
@@ -18,15 +18,42 @@ class TvShowRepository @Inject constructor(private val remoteDataSource: RemoteD
     private val _listOnTheAir: MutableStateFlow<ResultState<TvResult>> = idle()
     private val _listPopular: MutableStateFlow<ResultState<TvResult>> = idle()
     private val _listTopRated: MutableStateFlow<ResultState<TvResult>> = idle()
+    private val _tvShow: MutableStateFlow<ResultState<TvShow>> = idle()
+    private val _listCast: MutableStateFlow<ResultState<List<Cast>>> = idle()
+    private val _listCrew: MutableStateFlow<ResultState<List<Crew>>> = idle()
+    private val _videos: MutableStateFlow<ResultState<List<VideoTrailer>>> = idle()
+    private val _tvEpisodes: MutableStateFlow<ResultState<List<TvEpisode>>> = idle()
+    private val _searchResults: MutableStateFlow<ResultState<TvResult>> = idle()
 
     override val listAiringToday: StateFlow<ResultState<TvResult>>
         get() = _listAiringToday
+
     override val listOnTheAir: StateFlow<ResultState<TvResult>>
         get() = _listOnTheAir
+
     override val listPopular: StateFlow<ResultState<TvResult>>
         get() = _listPopular
+
     override val listTopRated: StateFlow<ResultState<TvResult>>
         get() = _listTopRated
+
+    override val tvShow: StateFlow<ResultState<TvShow>>
+        get() = _tvShow
+
+    override val listCast: StateFlow<ResultState<List<Cast>>>
+        get() = _listCast
+
+    override val listCrew: StateFlow<ResultState<List<Crew>>>
+        get() = _listCrew
+
+    override val videos: StateFlow<ResultState<List<VideoTrailer>>>
+        get() = _videos
+
+    override val tvEpisodes: StateFlow<ResultState<List<TvEpisode>>>
+        get() = _tvEpisodes
+
+    override val searchResults: StateFlow<ResultState<TvResult>>
+        get() = _searchResults
 
     override suspend fun getAiringToday() {
         fetch {
@@ -76,94 +103,75 @@ class TvShowRepository @Inject constructor(private val remoteDataSource: RemoteD
         }
     }
 
-    override fun getDetail(tvId: Int): Flow<Resource<TvShow>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getDetail(tvId).collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toTvShow()))
-                    is ApiResponse.Empty -> emit(Resource.Success<TvShow>(null))
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                }
+    override suspend fun getDetail(tvId: Int) {
+        fetch {
+            remoteDataSource.getDetail(tvId)
+        }.map { result ->
+            mapResult(result) {
+                this.toTvShow()
             }
-        } as Flow<Resource<TvShow>>
+        }.collect { result ->
+            _tvShow.value = result
+        }
     }
 
-    override fun searchTvShow(querySearch: String): Flow<Resource<List<TvShow>>> {
-        return flow {
-            emit(Resource.Loading())
-            when (val response = remoteDataSource.searchTvShow(querySearch).first()) {
-                is ApiResponse.Success -> {
-                    val result = response.data.toListTvShow()
-                    emit(Resource.Success(result))
-                }
-                is ApiResponse.Empty -> emit(Resource.Success<List<TvShow>>(emptyList()))
-                is ApiResponse.Error -> emit(Resource.Error(null, response.message))
+    override suspend fun searchTvShow(querySearch: String) {
+        fetch {
+            remoteDataSource.searchTvShow(querySearch)
+        }.map { result ->
+            mapResult(result) {
+                this.toTvResult()
             }
-        } as Flow<Resource<List<TvShow>>>
+        }.collect { result ->
+            _searchResults.value = result
+        }
     }
 
-    override fun getCast(tvId: Int): Flow<Resource<List<Cast>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getCast(tvId).collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> {
-                        val result = apiResponse.data.toListCast()
-                        emit(Resource.Success(result))
-                    }
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    ApiResponse.Empty -> emit(Resource.Success<List<Cast>>(emptyList()))
-                }
+    override suspend fun getCast(tvId: Int) {
+        fetch {
+            remoteDataSource.getCredits(tvId).castResponse
+        }.map { result ->
+            mapResult(result) {
+                this.toListCast()
             }
-        } as Flow<Resource<List<Cast>>>
+        }.collect { result ->
+            _listCast.value = result
+        }
     }
 
-    override fun getCrew(tvId: Int): Flow<Resource<List<Crew>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getCrew(tvId).collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> {
-                        val result = apiResponse.data.toListCrew()
-                        emit(Resource.Success(result))
-                    }
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    ApiResponse.Empty -> emit(Resource.Success<List<Crew>>(emptyList()))
-                }
+    override suspend fun getCrew(tvId: Int) {
+        fetch {
+            remoteDataSource.getCredits(tvId).crewResponse
+        }.map { result ->
+            mapResult(result) {
+                this.toListCrew()
             }
-        } as Flow<Resource<List<Crew>>>
+        }.collect { result ->
+            _listCrew.value = result
+        }
     }
 
-    override fun getVideos(tvId: Int): Flow<Resource<List<VideoTrailer>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getVideo(tvId).collect { apiResponse ->
-                when (apiResponse) {
-                    is ApiResponse.Success -> {
-                        val result = apiResponse.data.toListVideoTrailer()
-                        emit(Resource.Success(result))
-                    }
-                    is ApiResponse.Error -> emit(Resource.Error(null, apiResponse.message))
-                    ApiResponse.Empty -> emit(Resource.Success<List<VideoTrailer>>(emptyList()))
-                }
+    override suspend fun getVideos(tvId: Int) {
+        fetch {
+            remoteDataSource.getVideos(tvId).videoItemResponses
+        }.map { result ->
+            mapResult(result) {
+                this.toListVideoTrailer()
             }
-        } as Flow<Resource<List<VideoTrailer>>>
+        }.collect { result ->
+            _videos.value = result
+        }
     }
 
-    override fun getTvSeasons(tvId: Int, seasonNumber: Int): Flow<Resource<List<TvEpisode>>> {
-        return flow {
-            emit(Resource.Loading())
-            remoteDataSource.getTvSeasons(tvId, seasonNumber).collect { apiResponse ->
-                when (apiResponse) {
-                    ApiResponse.Empty -> emit(Resource.Success<List<TvEpisode>>(emptyList()))
-                    is ApiResponse.Error -> {
-                        emit(Resource.Error(null, apiResponse.message))
-                        Log.e("EpisodesFragment", apiResponse.message)
-                    }
-                    is ApiResponse.Success -> emit(Resource.Success(apiResponse.data.toListTvEpisode()))
-                }
+    override suspend fun getTvSeasons(tvId: Int, seasonNumber: Int) {
+        fetch {
+            remoteDataSource.getTvSeasons(tvId, seasonNumber).episodeResponses
+        }.map { result ->
+            mapResult(result) {
+                this.toListTvEpisode()
             }
-        } as Flow<Resource<List<TvEpisode>>>
+        }.collect { result ->
+            _tvEpisodes.value = result
+        }
     }
 }

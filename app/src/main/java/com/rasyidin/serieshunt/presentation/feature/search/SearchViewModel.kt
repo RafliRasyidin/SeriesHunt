@@ -11,6 +11,7 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ObsoleteCoroutinesApi
@@ -19,7 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val useCase: ITvShowUseCase) : ViewModel() {
 
-    val queryChannel = BroadcastChannel<String>(Channel.CONFLATED)
+    val searchResults = useCase.searchResults
+        .debounce(1000)
+        .distinctUntilChanged()
+        .asLiveData(viewModelScope.coroutineContext)
+
+    fun searchTv(query: String) = viewModelScope.launch {
+        useCase.searchTvShow(query)
+    }
+
+    /*val queryChannel = BroadcastChannel<String>(Channel.CONFLATED)
 
     val searchTvShow = queryChannel.asFlow()
         .debounce(1000)
@@ -28,5 +38,5 @@ class SearchViewModel @Inject constructor(private val useCase: ITvShowUseCase) :
             it.trim().isNotEmpty()
         }.mapLatest { query ->
             useCase.searchTvShow(query).asLiveData(viewModelScope.coroutineContext)
-        }.asLiveData(viewModelScope.coroutineContext)
+        }.asLiveData(viewModelScope.coroutineContext)*/
 }

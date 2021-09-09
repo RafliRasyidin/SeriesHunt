@@ -8,7 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rasyidin.serieshunt.core.data.Resource
+import com.rasyidin.serieshunt.core.utils.onFailure
+import com.rasyidin.serieshunt.core.utils.onSuccess
 import com.rasyidin.serieshunt.databinding.FragmentEpisodesBinding
 import com.rasyidin.serieshunt.presentation.adapter.TvEpisodeAdapter
 import com.rasyidin.serieshunt.presentation.base.BaseFragment
@@ -47,18 +48,18 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding>(FragmentEpisodesB
     }
 
     private fun observeTvSeasons(tvId: Int, seasonNumber: Int) {
-        viewModel.getTvSeason(tvId, seasonNumber).observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Error -> {
-                    Toast.makeText(
-                        activity,
-                        "Something Wrong!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e("EpisodesFragment", "${resource.message}")
+        viewModel.getTvSeason(tvId, seasonNumber)
+        viewModel.tvEpisodes.observe(viewLifecycleOwner) { resultState ->
+
+            resultState.onSuccess { listEpisodes ->
+                if (listEpisodes.isNotEmpty()) {
+                    tvEpisodeAdapter.submitList(listEpisodes)
                 }
-                is Resource.Loading -> Unit
-                is Resource.Success -> tvEpisodeAdapter.submitList(resource.data)
+            }
+
+            resultState.onFailure { throwable ->
+                Toast.makeText(requireActivity(), "Something Wrong!", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, throwable.message.toString())
             }
         }
     }
@@ -89,6 +90,7 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding>(FragmentEpisodesB
 
         private const val ARG_ID_TV = "idTv"
         private const val ARG_NUMBER_OF_SEASON = "numberOfSeason"
+        private val TAG = EpisodesFragment::class.simpleName
 
         @JvmStatic
         fun newInstance(idTv: Int, numberOfSeason: Int) =
